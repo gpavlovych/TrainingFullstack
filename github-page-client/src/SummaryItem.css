@@ -1,0 +1,18 @@
+.Summary {
+    color: #969696;
+}
+
+.Summary-header{
+    font-size: small;
+    font-weight: bold;
+}
+
+.Summary-body{
+    font-size: xx-large;
+    color: #323232;
+}
+
+.Summary-footer{
+    font-size: small;
+    font-weight: bold;
+}

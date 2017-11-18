@@ -1,0 +1,37 @@
+.App-contributions-table {
+    font-size: small;
+    height: auto;
+    margin: 15px;
+    color: #bebebe;
+}
+
+.App-contributions-table-head{
+    text-align: center;
+    align-content: center;
+}
+
+.App-contributions-table-cell-legend{
+    font-size: small;
+    font-weight: bold;
+}
+.App-contributions-table-cell{
+    font-size: xx-small;
+}
+.App-contributions-table-cell-explanation {
+    font-size: small;
+    font-weight: bold;
+}
+.App-contributions-table-row {
+
+}
+
+.App-contributions-table-cell-explanation{
+    float: left;
+    margin: 15px;
+    color: #969696;
+}
+
+.App-contributions-table-cell-legend {
+    float: right;
+    margin: 15px;
+}
