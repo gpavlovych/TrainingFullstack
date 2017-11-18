@@ -1,0 +1,75 @@
+.App {
+  text-align: center;
+  margin: 100px;
+  border: solid 1px gray;
+  width: 60%;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  border: solid 1px gray;
+  background: gainsboro;
+}
+.App-footer{
+  width: calc(100% - 2px);
+  border: solid 1px gray;
+}
+.App-footer-left{
+   width:  calc(33% - 4px);
+  float: left;
+  border-right: solid 1px gray;
+ }
+.App-footer-center{
+  width: calc(34% - 4px);
+  float: left;
+  border-right: solid 1px gray;
+}.App-footer-right{  float: right;
+   width: calc(33% - 4px);
+ }
+.App-title {
+  font-size: 1.2em;
+}
+.App-title h1{
+  float: left;
+}
+.Summary-header{
+  font-size: x-small;
+}
+.Summary-body{
+  font-size: xx-large;
+}
+.Summary-footer{
+  font-size: x-small;
+}
+.App-contributions-table {
+   font-size: large;
+   width: 100%;
+  height: auto;
+ }
+.App-contributions-table-head{
+    text-align: center;
+    align-content: center;
+}
+.App-contributions-table-cell{
+
+}
+.App-contributions-table-row {
+
+}
+
+.App-footer-summary {
+  width:100%;border-collapse: collapse;
+}
+
+.App-footer-summary td{
+  border: solid 1px gray;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
