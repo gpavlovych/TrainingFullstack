@@ -18,27 +18,7 @@ const sagaMiddleware = createSagaMiddleware();
 const store = createStore<IRegistrationState>(reducer, applyMiddleware(sagaMiddleware));
 sagaMiddleware.run(rootSaga);
 import history from './history';
-/*
-function isAuthorized () : boolean {
-    const {isLoggedIn} = store.getState();
-    console.log(isLoggedIn);
-    return isLoggedIn;
-}
-const PrivateRoute = ({ component: Component, ...rest }: any) => {
-    return (
-        <Route {...rest} render={props => (
-            isAuthorized()  ? (
-                <Component {...props}/>
-            ) : (
-                <Redirect to={{
-                    pathname: '/',
-                    state: {from: props.location}
-                }}/>
-            )
-        )}/>
-    );
-};
-*/
+
 ReactDOM.render(
     <Provider store={store}>
         <App>
