@@ -1,4 +1,3 @@
 # This is the github statistics widget
 
-It is meant to show the following information
-![The explanation](https://gpavlovych.github.io/TrainingFullstack?raw=true)
+![Follow the link to check how this works.](http://www.screencast.com/t/9K7t34Esn9)
