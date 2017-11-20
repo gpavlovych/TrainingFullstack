@@ -1,7 +1,9 @@
 import * as React from "react";
+import Header from "./Header";
+import {connect} from "react-redux";
 const Background = require("../logo.jpg");
 
-export class Welcome extends React.Component {
+class Welcome extends React.Component<any> {
     render() {
 
         let sectionStyle = {
@@ -14,6 +16,13 @@ export class Welcome extends React.Component {
             backgroundImage: `url(${Background})`
         };
 
-        return <div style={sectionStyle}></div>;
+        return <div><Header {...this.props}></Header><div style={sectionStyle}></div></div>;
     }
 }
+function select (state: any) {
+    return {
+        data: state
+    }
+}
+
+export default connect(select)(Welcome);

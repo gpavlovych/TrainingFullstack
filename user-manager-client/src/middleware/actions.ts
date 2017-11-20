@@ -16,7 +16,7 @@ export interface LoginRequestAction{
     type: TypeKeys.LOGIN_REQUEST_ACTION;
     email: string;
     password: string;
-    history: any;
+    callback: ()=>{};
 }
 
 export interface LogoutSuccessAction {
@@ -25,7 +25,7 @@ export interface LogoutSuccessAction {
 
 export interface LogoutRequestAction {
     type: TypeKeys.LOGOUT_REQUEST_ACTION;
-    history: any;
+    callback: ()=>{};
 }
 
 export interface RegisterRequestAction {
@@ -33,7 +33,7 @@ export interface RegisterRequestAction {
     username: string;
     email: string;
     password: string;
-    history: any;
+    callback: ()=>{};
 }
 
 export interface CloseSignInFormAction {

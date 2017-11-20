@@ -1,6 +1,8 @@
 import * as React from "react";
+import Header from "./Header";
+import {connect} from "react-redux";
 
-export class Home extends React.Component {
+class Home extends React.Component<any> {
 
     private static getUserItem(){
         return <label>Hi there</label>
@@ -8,6 +10,14 @@ export class Home extends React.Component {
 
     render() {
         let users = ['','',''];
-        return users.map(Home.getUserItem);
+        return <div><Header {...this.props}></Header>{users.map(Home.getUserItem)}</div>;
     }
 }
+
+function select (state: any) {
+    return {
+        data: state
+    }
+}
+
+export default connect(select)(Home);

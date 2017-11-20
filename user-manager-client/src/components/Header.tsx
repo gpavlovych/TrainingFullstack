@@ -4,13 +4,32 @@ import {connect} from 'react-redux'
 import {Login, LoginTab} from "./Login";
 import {TypeKeys} from "../middleware/actions";
 const logo = require('../navbar-logo.png');
-export class Header extends React.Component<any> {
+class Header extends React.Component<any> {
     render() {
+        let history = this.props.history;
         return (<Navbar>
             <Login isOpened={this.props.data.isSignInFormOpened || this.props.data.isSignUpFormOpened}
                    tab={this.props.data.isSignUpFormOpened ? LoginTab.SignUp:LoginTab.SignIn}
-                   onRegister={(username: string, email: string, password: string)=>this.props.dispatch({type: TypeKeys.REGISTER_REQUEST_ACTION, history: this.props.history, username, email, password})}
-                   onLogin={(email: string, password: string)=>this.props.dispatch({type: TypeKeys.LOGIN_REQUEST_ACTION, history: this.props.history, email, password})}
+                   onRegister={(username: string, email: string, password: string)=>this.props.dispatch({
+                       type: TypeKeys.REGISTER_REQUEST_ACTION,
+                       username,
+                       email,
+                       password,
+                       callback: () => {
+                           console.log('callback called!');
+                           debugger;
+                           history.push('/dashboard');
+                       }
+                   })}
+                   onLogin={(email: string, password: string)=>this.props.dispatch({
+                       type: TypeKeys.LOGIN_REQUEST_ACTION,
+                       email,
+                       password,
+                       callback: () => {
+                           console.log('callback called!');
+                           history.push('/dashboard');
+                       }
+                   })}
                    onClose={()=>this.props.dispatch({type: TypeKeys.CLOSE_SIGNIN_FORM_ACTION})}
             />
             <Navbar.Header>
@@ -36,7 +55,12 @@ export class Header extends React.Component<any> {
                         </Nav>
                         :<Nav pullRight>
                             <NavItem>Welcome, {this.props.data.username}!</NavItem>
-                            <NavItem eventKey={2} href="#"><Button bsStyle="primary" onClick={() => this.props.dispatch({type: TypeKeys.LOGOUT_REQUEST_ACTION, history: this.props.history})}>Logout</Button></NavItem>
+                            <NavItem eventKey={2} href="#"><Button bsStyle="primary" onClick={() => this.props.dispatch({type: TypeKeys.LOGOUT_REQUEST_ACTION,
+                                callback: () => {
+                                    console.log('callback called!');
+                                    history.push('/');
+                                }
+                            })}>Logout</Button></NavItem>
                         </Nav>
                 }
             </Navbar.Collapse>

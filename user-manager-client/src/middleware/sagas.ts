@@ -8,7 +8,7 @@ export function * loginFlow (): IterableIterator<any> {
     while (true) {
         // And we're listening for `LOGIN_REQUEST` actions and destructuring its payload
         const action = yield take(TypeKeys.LOGIN_REQUEST_ACTION);
-        const {email, password} = action;
+        const {email, password, callback} = action;
 
         // A `LOGOUT` action may happen while the `authorize` effect is going on, which may
         // lead to a race condition. This is unlikely, but just in case, we call `race` which
@@ -24,7 +24,7 @@ export function * loginFlow (): IterableIterator<any> {
             yield put({type: TypeKeys.LOGIN_SUCCESS_ACTION, username: winner.loginResponse.username, token: winner.loginResponse.token});// User is logged in (authorized)
             yield put({type: TypeKeys.CLOSE_SIGNIN_FORM_ACTION});
          //   yield put({type: CHANGE_FORM, newFormState: {username: '', password: ''}});// Clear form
-       //     history.push('/dashboard'); // Go to dashboard page
+            callback(); // Go to dashboard page
         }
     }
 }
@@ -33,11 +33,11 @@ export function * registerFlow () {
     while (true) {
         // We always listen to `REGISTER_REQUEST` actions
         const action = yield take(TypeKeys.REGISTER_REQUEST_ACTION);
-        const {username, email, password, history} = action;
+        const {username, email, password, callback} = action;
 
         // We call the `authorize` task with the data, telling it that we are registering a user
         // This returns `true` if the registering was successful, `false` if not
-        const registerResponse = yield call(register, {username, email, password})
+        const registerResponse = yield call(register, {username, email, password});
 
         // If we could register a user, we send the appropiate actions
         if (registerResponse) {
@@ -47,17 +47,17 @@ export function * registerFlow () {
                 password: registerResponse.password,
                 email: registerResponse.email
             });
-            yield put({type: TypeKeys.LOGIN_REQUEST_ACTION, email, password, history});
+            yield put({type: TypeKeys.LOGIN_REQUEST_ACTION, email, password, callback});
         }
     }
 }
 
 export function * logoutFlow () {
     while (true) {
-        yield take(TypeKeys.LOGOUT_REQUEST_ACTION);
+        let action = yield take(TypeKeys.LOGOUT_REQUEST_ACTION);
         yield put ({type: TypeKeys.LOGOUT_SUCCESS_ACTION});
-    //    const {history} = action;
-  //      history.push('/');
+        const {callback} = action;
+        callback();
     }
 }
 
