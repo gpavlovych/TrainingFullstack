@@ -6,7 +6,7 @@ import {
     Col, Form, FormControl, FormGroup, Glyphicon, InputGroup, Jumbotron, Modal, Nav, NavItem,
     Row
 } from "react-bootstrap";
-const logo = require("./navbar-logo.png");
+const logo = require("../navbar-logo.png");
 
 export enum LoginTab {
     SignIn="signIn",
@@ -18,7 +18,7 @@ export interface ILoginProps {
     tab: LoginTab;
     onClose(): {};
     onLogin(username: string, password: string): {};
-    onRegister(username: string, password: string): {};
+    onRegister(username: string, email: string, password: string): {};
 }
 
 export interface ILoginState{
@@ -60,7 +60,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
     }
 
     register(){
-        this.props.onRegister(this.state.signUpLogin, this.state.signUpPassword);
+        this.props.onRegister(this.state.signUpUsername, this.state.signUpLogin, this.state.signUpPassword);
         this.closeWindow();
     }
 

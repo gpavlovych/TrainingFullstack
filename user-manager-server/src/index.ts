@@ -7,6 +7,7 @@ import * as JwtFunc from "jsonwebtoken";
 import {init} from "./database";
 import {IUser} from "./models/User";
 import {ILoginModel} from "./models/login";
+import cors = require("koa2-cors");
 
 const app = new Koa();
 const secretKey = "very secret key";
@@ -14,9 +15,10 @@ const jwt = KoaJwt({secret: secretKey});
 
 app.use(body());
 app.use(json());
+app.use(cors());
 export const config = {
     "host": "mongodb://localhost:27017/test",
-    "port": 3000
+    "port": 4245
 };
 
 const database = init({host: config.host});
@@ -55,12 +57,19 @@ router
 
 router.post('/token', async (ctx)=> {
     let model: ILoginModel = ctx.request.body;
+    console.log(model);
     let user = await database.userModel.findOne({username: model.username});
+    console.log(user);
+    if (user === null) {
+        user = await database.userModel.findOne({email: model.username});
+    }
+
     console.log(user);
     if (user !== null && user.password === model.password) {
         let expiresInSeconds = 40;
         ctx.status = 200;
         ctx.body = {
+            username: user.username,
             token: JwtFunc.sign({userId: user._id}, secretKey, {'expiresIn': expiresInSeconds}),
             expiresInSeconds: expiresInSeconds
         };

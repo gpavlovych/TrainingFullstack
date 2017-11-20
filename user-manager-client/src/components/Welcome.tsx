@@ -1,5 +1,5 @@
 import * as React from "react";
-const Background = require("./logo.jpg");
+const Background = require("../logo.jpg");
 
 export class Welcome extends React.Component {
     render() {
