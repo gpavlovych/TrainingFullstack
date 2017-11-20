@@ -1,4 +1,6 @@
 export enum TypeKeys {
+    GET_USERS_REQUEST_ACTION = "GET_USERS_REQUEST_ACTION",
+    GET_USERS_SUCCESS_ACTION = "GET_USERS_SUCCESS_ACTION",
     LOGIN_REQUEST_ACTION = "LOGIN_REQUEST_ACTION",
     LOGOUT_SUCCESS_ACTION = "LOGOUT_SUCCESS_ACTION",
     LOGOUT_REQUEST_ACTION = "LOGOUT_REQUEST_ACTION",
@@ -10,6 +12,15 @@ export enum TypeKeys {
     LOGIN_SUCCESS_ACTION = "LOGIN_SUCCESS_ACTION",
     REGISTER_SUCCESS_ACTION = "REGISTER_SUCCESS_ACTION",
     OTHER_ACTION = "OTHER_ACTION"
+}
+
+export interface GetUsersRequestAction {
+    type: TypeKeys.GET_USERS_REQUEST_ACTION;
+}
+
+export interface GetUsersSuccessAction {
+    type: TypeKeys.GET_USERS_SUCCESS_ACTION;
+    users: any[];
 }
 
 export interface LoginRequestAction{
@@ -69,7 +80,10 @@ export interface OtherAction {
     type: TypeKeys.OTHER_ACTION;
 }
 
-export type ActionTypes = LoginRequestAction |
+export type ActionTypes =
+    GetUsersRequestAction |
+    GetUsersSuccessAction |
+    LoginRequestAction |
     LogoutRequestAction |
     LogoutSuccessAction |
     RegisterRequestAction |

@@ -7,6 +7,7 @@ export interface State{
     password?: string|null;
     email?: string|null;
     token?: string|null;
+    users?: any[]|null;
 }
 
 export const initialState = {
@@ -16,6 +17,12 @@ export const initialState = {
 
 export default function reducer(state: State = initialState, action: ActionTypes): State {
     switch (action.type) {
+        case TypeKeys.GET_USERS_REQUEST_ACTION:
+            return {...state, users: null};
+
+        case TypeKeys.GET_USERS_SUCCESS_ACTION:
+            return {...state, users: action.users};
+
         case TypeKeys.OPEN_SIGNIN_FORM_ACTION:
             return { ...state, isSignInFormOpened: true, isSignUpFormOpened: false };
 

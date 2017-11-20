@@ -61,9 +61,16 @@ export function * logoutFlow () {
     }
 }
 
+export function * getAllUsersFlow(){
+    while (true) {
+        yield take(TypeKeys.GET_USERS_REQUEST_ACTION);
+        yield put ({type: TypeKeys.GET_USERS_SUCCESS_ACTION, users: [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]});
+    }
+}
 // single entry point to start all Sagas at once
 export default function* rootSaga() {
     yield fork(loginFlow);
     yield fork(logoutFlow);
     yield fork(registerFlow);
+    yield fork(getAllUsersFlow);
 }

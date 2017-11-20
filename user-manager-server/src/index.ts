@@ -13,7 +13,7 @@ const app = new Koa();
 const secretKey = "very secret key";
 const jwt = KoaJwt({secret: secretKey});
 
-app.use(body());
+app.use(body({multipart: true, urlencoded:true, formLimit: 4243124312}));
 app.use(json());
 app.use(cors());
 export const config = {
@@ -25,6 +25,13 @@ const database = init({host: config.host});
 
 const router = new Router();
 router
+    .get('/api/v1/users/:username/photo', jwt,async ctx=>{
+        let user = await database.userModel.findOne({username: ctx.params.username});
+        if (user !== null) {
+            ctx.response.type = user.userphoto.contentType;
+            ctx.body = user.userphoto.data;
+        }
+    })
     .get('/api/v1/users/:username', jwt,async ctx=>{
         ctx.body = await database.userModel.findOne({username: ctx.params.username});
     })
@@ -46,6 +53,11 @@ router
             await user.save();
             ctx.body = user;
         }
+    })
+    .post('/api/v1/users/:username/photo', async ctx=>{
+        console.log("here ami");
+        const file = ctx.request.body;
+        console.log(file);
     })
     .del('/api/v1/users/:username', jwt, async ctx=> {
         let user = await database.userModel.findOne({username: ctx.params.username});
