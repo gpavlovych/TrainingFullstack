@@ -11,6 +11,8 @@ export enum TypeKeys {
     OPEN_SIGNUP_FORM_ACTION = "OPEN_SIGNUP_FORM_ACTION",
     LOGIN_SUCCESS_ACTION = "LOGIN_SUCCESS_ACTION",
     REGISTER_SUCCESS_ACTION = "REGISTER_SUCCESS_ACTION",
+    OPEN_ERROR_MESSAGE_ACTION = "OPEN_ERROR_MESSAGE_ACTION",
+    CLOSE_ERROR_MESSAGE_ACTION = "CLOSE_ERROR_MESSAGE_ACTION",
     OTHER_ACTION = "OTHER_ACTION"
 }
 
@@ -70,6 +72,15 @@ export interface LoginSuccessAction {
     token: string;
 }
 
+export interface OpenErrorMessageAction {
+    type: TypeKeys.OPEN_ERROR_MESSAGE_ACTION;
+    errorMessage: string;
+}
+
+export interface CloseErrorMessageAction {
+    type: TypeKeys.CLOSE_ERROR_MESSAGE_ACTION;
+}
+
 export interface RegisterSuccessAction {
     type: TypeKeys.REGISTER_SUCCESS_ACTION;
     username: string;
@@ -94,4 +105,6 @@ export type ActionTypes =
     OpenSignInFormAction |
     LoginSuccessAction |
     RegisterSuccessAction |
+    OpenErrorMessageAction |
+    CloseErrorMessageAction |
     OtherAction;

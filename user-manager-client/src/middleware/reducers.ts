@@ -3,6 +3,8 @@ import {ActionTypes, TypeKeys} from "./actions";
 export interface State{
     isSignInFormOpened: boolean;
     isSignUpFormOpened: boolean;
+    isErrorMessageOpened: boolean;
+    errorMessage?: string|null;
     username?: string|null;
     password?: string|null;
     email?: string|null;
@@ -12,10 +14,12 @@ export interface State{
 
 export const initialState = {
     isSignInFormOpened:false,
-    isSignUpFormOpened:false
+    isSignUpFormOpened:false,
+    isErrorMessageOpened:false
 };
 
 export default function reducer(state: State = initialState, action: ActionTypes): State {
+    console.log(action);
     switch (action.type) {
         case TypeKeys.GET_USERS_REQUEST_ACTION:
             return {...state, users: null};
@@ -49,6 +53,12 @@ export default function reducer(state: State = initialState, action: ActionTypes
 
         case TypeKeys.REGISTER_SUCCESS_ACTION:
             return {...state, email: action.email, username: action.username, password: action.password};
+
+        case TypeKeys.OPEN_ERROR_MESSAGE_ACTION:
+            return {...state, isErrorMessageOpened: true, errorMessage: action.errorMessage};
+
+        case TypeKeys.CLOSE_ERROR_MESSAGE_ACTION:
+            return {...state, isErrorMessageOpened: false};
 
         default:
             return state;

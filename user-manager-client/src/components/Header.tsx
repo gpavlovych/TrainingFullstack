@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Button, Nav, Navbar, NavDropdown, NavItem} from "react-bootstrap";
+import {Button, Modal, Nav, Navbar, NavDropdown, NavItem} from "react-bootstrap";
 import {connect} from 'react-redux'
 import {Login, LoginTab} from "./Login";
 import {TypeKeys} from "../middleware/actions";
@@ -32,6 +32,16 @@ class Header extends React.Component<any> {
                    })}
                    onClose={()=>this.props.dispatch({type: TypeKeys.CLOSE_SIGNIN_FORM_ACTION})}
             />
+            <Modal show={this.props.data.isErrorMessageOpened} onHide={()=>this.props.dispatch({type: TypeKeys.CLOSE_ERROR_MESSAGE_ACTION})}>
+                <Modal.Header closeButton>
+                    <Modal.Title id="contained-modal-title-lg">
+                        Error occured.
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {this.props.data.errorMessage}
+                </Modal.Body>
+            </Modal>
             <Navbar.Header>
                 <Navbar.Brand>
                     <a className="navbar-brand" href="#"><img height="20px" style={{ float: 'left' }}  src={logo}/>Auth03</a>

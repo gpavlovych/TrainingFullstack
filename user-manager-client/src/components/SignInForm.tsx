@@ -70,7 +70,7 @@ export class SignInForm extends React.Component<ISignInFormProps, ISignInFormSta
     render(){
         return (<Form style={{marginTop: "10px"}}>
             <FormGroup>
-                <InputGroup>
+                <InputGroup className={this.state.errorMessages["email"]?"has-error":""} title={this.state.errorMessages["email"]} >
                     <InputGroup.Addon>
                         <Glyphicon glyph="envelope" />
                     </InputGroup.Addon>
@@ -78,7 +78,7 @@ export class SignInForm extends React.Component<ISignInFormProps, ISignInFormSta
                 </InputGroup>
             </FormGroup>
             <FormGroup>
-                <InputGroup>
+                <InputGroup className={this.state.errorMessages["password"]?"has-error":""} title={this.state.errorMessages["password"]} >
                     <InputGroup.Addon>
                         <Glyphicon glyph="lock" />
                     </InputGroup.Addon>
