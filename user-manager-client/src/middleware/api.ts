@@ -2,11 +2,12 @@ const request = async (method: string, url: string, {body, token, contentType}: 
     let options: any = {
         method: method,
         credentials: "same-origin",
-        body: body
+        body: body,
+        headers: {}
     };
 
     if (typeof contentType !== 'undefined') {
-        options.headers = {"Content-Type": contentType};
+        options.headers["Content-Type"] = contentType;
     }
 
     if (typeof token !== 'undefined') {
@@ -57,7 +58,7 @@ export const register = async ({email, password, firstName, lastName, position}:
 export const uploadPhoto = async ({id, photo, token}: any) =>{
     let formData = new FormData();
 
-    formData.append("file", photo);
+    formData.append("file", photo, photo.name);
     return await post(`http://localhost:4245/api/v1/users/${id}/photo`, {body: formData, token: token});
 };
 

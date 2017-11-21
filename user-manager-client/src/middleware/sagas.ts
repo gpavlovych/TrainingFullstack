@@ -42,7 +42,8 @@ export function * registerFlow () {
         // We always listen to `REGISTER_REQUEST` actions
         const action = yield take(TypeKeys.REGISTER_REQUEST_ACTION);
         const {email, password, firstName, lastName, position, userPhoto, callback} = action;
-        try {
+        //try
+        {
             // We call the `authorize` task with the data, telling it that we are registering a user
             // This returns `true` if the registering was successful, `false` if not
             const registerResponse = yield call(register, {email, password, firstName, lastName, position});
@@ -67,9 +68,9 @@ export function * registerFlow () {
                 }
             }
         }
-        catch (error){
+       // catch (error){
             yield put({type: TypeKeys.OPEN_ERROR_MESSAGE_ACTION, errorMessage: "Sign up failed!"});
-        }
+   //     }
     }
 }
 
