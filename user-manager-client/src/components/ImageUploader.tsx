@@ -1,42 +1,40 @@
 import * as React from "react";
 
 interface IImageUploaderState{
-    imagePreview: any
+    file: any
 }
 
 export interface IImageUploaderProps {
-    file?: Blob,
-    onChange: (file: Blob)=>void
+    file: any;
+    onChange: (file: any)=>void
 }
 
 export class ImageUploader extends React.Component<IImageUploaderProps, IImageUploaderState> {
     constructor(props: IImageUploaderProps){
         super(props);
-        this.state = {imagePreview: null};
+        this.state = {file: props.file};
     }
 
-    private loadPreview(file: Blob|undefined) {
+    private loadPreview(file: Blob|null) {
         if (file) {
             let reader = new FileReader();
             reader.onload = (e: any) => {
-                this.setState({imagePreview: e.target.result});
+                console.log("image preview loaded successfully!");
+                this.props.onChange(e.target.result);
+                this.setState({file: e.target.result});
             };
 
             reader.readAsDataURL(file);
         }
         else {
-            this.setState({imagePreview: null});
+            this.setState({file: null});
         }
     }
 
-    componentWillReceiveProps() {
-        this.loadPreview(this.props.file);
-    }
-
     render() {
-        return <label className="form form-control" style={{height: 120, width: "100%", textAlign: "center", backgroundImage: this.state.imagePreview, display: "table", alignContent: "center"}}>
+        return <label className="form form-control" style={{height: 120, width: "100%", textAlign: "center", display: "table", alignContent: "center"}}>
                 <div style={{display: "table-cell", verticalAlign: "middle", maxWidth: "100%", maxHeight: "100%"}}>
-                    <img src={this.state.imagePreview}
+                    <img src={this.state.file}
                          alt="click here to upload the photo"
                          style={{maxWidth: "100%", maxHeight: "100%"}}/>
                 </div>
@@ -47,8 +45,7 @@ export class ImageUploader extends React.Component<IImageUploaderProps, IImageUp
                            let files = evt.target.files;
                            if (files && files[0]) {
                                let file = files[0];
-                               this.loadPreview(files[0]);
-                               this.props.onChange(file);
+                               this.loadPreview(file);
                            }
                        }}
                 />

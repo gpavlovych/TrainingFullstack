@@ -3,7 +3,7 @@ import {Button, Form, FormControl, FormGroup, Glyphicon, InputGroup} from "react
 import {ImageUploader} from "./ImageUploader";
 
 interface ISignUpFormProps {
-    submit: (userPhoto: Blob|undefined,
+    submit: (userPhoto: any,
              position: string,
              firstName: string,
              lastName: string,
@@ -12,7 +12,7 @@ interface ISignUpFormProps {
 }
 
 interface ISignUpFormState{
-    userPhoto?: Blob;
+    userPhoto: any;
     position: string;
     firstName: string;
     lastName: string;
@@ -42,6 +42,7 @@ export class SignUpForm extends React.Component<ISignUpFormProps, ISignUpFormSta
     private constructor(props: any) {
         super(props);
         this.state = {
+            userPhoto: null,
             position: "",
             firstName: "",
             lastName: "",
@@ -98,7 +99,7 @@ export class SignUpForm extends React.Component<ISignUpFormProps, ISignUpFormSta
                     <InputGroup.Addon>
                         <Glyphicon glyph="camera"/>
                     </InputGroup.Addon>
-                    <ImageUploader file={this.state.userPhoto} onChange={(file: Blob)=>{this.setState({userPhoto: file})}} />
+                    <ImageUploader file={this.state.userPhoto} onChange={(file: any)=>{this.setState({userPhoto: file})}} />
                 </InputGroup>
             </FormGroup>
             <FormGroup>

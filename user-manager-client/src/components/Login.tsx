@@ -18,21 +18,13 @@ export interface ILoginProps {
     isOpened: boolean;
     tab: LoginTab;
     onClose(): {};
-    onLogin(username: string, password: string): {};
-    onRegister(firstname: string, lastname: string, position: string, email: string, password: string): {};
+    onLogin(email: string, password: string): {};
+    onRegister(userPhoto: Blob|null, firstName: string, lastName: string, position: string, email: string, password: string): {};
 }
 
 export interface ILoginState{
     isOpened: boolean;
     tab: LoginTab;
-    signInLogin: string;
-    signInPassword: string;
-    signUpPosition: string,
-    signUpFirstname: string,
-    signUpLastname: string,
-    signUpLogin: string;
-    signUpPassword: string;
-    signUpConfirmPassword: string;
 }
 
 export class Login extends React.Component<ILoginProps, ILoginState> {
@@ -40,15 +32,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
         super(props);
         this.state = {
             isOpened: props.isOpened,
-            tab: props.tab,
-            signInLogin: "",
-            signInPassword: "",
-            signUpPosition: "",
-            signUpFirstname: "",
-            signUpLastname: "",
-            signUpLogin: "",
-            signUpPassword: "",
-            signUpConfirmPassword: ""
+            tab: props.tab
         };
     }
     private closeWindow(){
@@ -56,16 +40,6 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
     }
     close() {
         this.props.onClose();
-        this.closeWindow();
-    }
-
-    login(){
-        this.props.onLogin(this.state.signInLogin, this.state.signInPassword);
-        this.closeWindow();
-    }
-
-    register(){
-        this.props.onRegister(this.state.signUpFirstname, this.state.signUpLastname, this.state.signUpPosition, this.state.signUpLogin, this.state.signUpPassword);
         this.closeWindow();
     }
 
@@ -108,12 +82,12 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
                                     <SignInForm submit={(email: string, password: string)=>this.props.onLogin(email, password)}/>
                                 </Tab.Pane>
                                 <Tab.Pane eventKey={LoginTab.SignUp}>
-                                    <SignUpForm submit={(userPhoto: Blob|undefined,
+                                    <SignUpForm submit={(userPhoto: Blob|null,
                                                          position: string,
                                                          firstName: string,
                                                          lastName: string,
                                                          email: string,
-                                                         password: string)=>this.props.onRegister(firstName, lastName, position, email, password)}/>
+                                                         password: string)=>this.props.onRegister(userPhoto, firstName, lastName, position, email, password)}/>
                                 </Tab.Pane>
                             </Tab.Content>
                         </Col>

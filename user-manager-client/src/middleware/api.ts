@@ -1,26 +1,24 @@
-const request = async (method: string, url: string, {payload, token}: any): Promise<any> => {
+const request = async (method: string, url: string, {body, token, contentType}: any): Promise<any> => {
     let options: any = {
         method: method,
-        headers: {
-            "Content-Type": "application/json"
-        },
-        credentials: "same-origin"
+        credentials: "same-origin",
+        body: body
     };
 
-    if (typeof payload !== 'undefined') {
-        options.body = JSON.stringify(payload);
+    if (typeof contentType !== 'undefined') {
+        options.headers = {"Content-Type": contentType};
     }
 
     if (typeof token !== 'undefined') {
-        options.headers["Authorization"] = `Bearer ${token}`
+        options.headers["Authorization"] = `Bearer ${token}`;
     }
 
     return await fetch(url, options)
-        .then(result=>{
+        .then(result => {
             console.log(`success; response: ${result}`);
             return result;
         })
-        .catch(error=>{
+        .catch(error => {
             console.log(`error; response: ${error}`);
         });
 };
@@ -32,21 +30,37 @@ const get = async (url: string, token: string ) => {
     return responseBody;
 };
 
-const post = async (url: string, payload: any) => {
-    let response = await request("POST", url, {payload});
+const post = async (url: string, {body, token, contentType}: any) => {
+    let response = await request("POST", url, {body, token, contentType});
     let responseBody = response.json();
     console.log(`response body: ${responseBody}`);
     return responseBody;
 };
-
-export const login = async (payload:any)=> {
-    return await post("http://localhost:4245/token",payload);
+/*
+const put = async (url: string, {payload, token}: any) => {
+    let response = await request("PUT", url, {token, payload});
+    let responseBody = response.json();
+    console.log(`response body: ${responseBody}`);
+    return responseBody;
+};
+*/
+export const login = async ({email, password}: any)=> {
+    return await post("http://localhost:4245/token",{body: JSON.stringify({username: email, password}), contentType: "application/json"});
 };
 
-export const register = async (payload: any) =>{
-    return await post("http://localhost:4245/api/v1/users",payload);
+export const register = async ({email, password, firstName, lastName, position}: any) =>{
+    let payload = {email, password, firstName, lastName, position};
+    console.log(payload);
+    return await post("http://localhost:4245/api/v1/users",{body: JSON.stringify(payload), contentType: "application/json"});
 };
 
-export const getUsers = async (jwt: string) =>{
-    return await get("http://localhost:4245/api/v1/users", jwt);
+export const uploadPhoto = async ({id, photo, token}: any) =>{
+    let formData = new FormData();
+
+    formData.append("file", photo);
+    return await post(`http://localhost:4245/api/v1/users/${id}/photo`, {body: formData, token: token});
+};
+
+export const getUsers = async ({token}: any) =>{
+    return await get("http://localhost:4245/api/v1/users", token);
 };

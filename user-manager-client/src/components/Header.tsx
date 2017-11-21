@@ -10,9 +10,12 @@ class Header extends React.Component<any> {
         return (<Navbar>
             <Login isOpened={this.props.data.isSignInFormOpened || this.props.data.isSignUpFormOpened}
                    tab={this.props.data.isSignUpFormOpened ? LoginTab.SignUp:LoginTab.SignIn}
-                   onRegister={(username: string, email: string, password: string)=>this.props.dispatch({
+                   onRegister={(userPhoto: Blob|null, firstName: string, lastName: string, position: string, email: string, password: string)=>this.props.dispatch({
                        type: TypeKeys.REGISTER_REQUEST_ACTION,
-                       username,
+                       userPhoto,
+                       firstName,
+                       lastName,
+                       position,
                        email,
                        password,
                        callback: () => {

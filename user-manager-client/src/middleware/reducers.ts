@@ -4,8 +4,12 @@ export interface State{
     isSignInFormOpened: boolean;
     isSignUpFormOpened: boolean;
     isErrorMessageOpened: boolean;
+    currentUserId: any;
     errorMessage?: string|null;
-    username?: string|null;
+    firstName?: string|null;
+    lastName?: string|null;
+    position?: string|null;
+    userPhoto?: Blob|null;
     password?: string|null;
     email?: string|null;
     token?: string|null;
@@ -15,7 +19,8 @@ export interface State{
 export const initialState = {
     isSignInFormOpened:false,
     isSignUpFormOpened:false,
-    isErrorMessageOpened:false
+    isErrorMessageOpened:false,
+    currentUserId:null
 };
 
 export default function reducer(state: State = initialState, action: ActionTypes): State {
@@ -46,13 +51,13 @@ export default function reducer(state: State = initialState, action: ActionTypes
             return {...state, email: action.email, password: action.password};
 
         case TypeKeys.LOGIN_SUCCESS_ACTION:
-            return {...state, email: null, password: null, username: action.username, token: action.token};
+            return {...state, email: null, password: null, currentUserId: action.currentUserId, token: action.token};
 
         case TypeKeys.REGISTER_REQUEST_ACTION:
-            return {...state, email: action.email, username: action.username, password: action.password};
+            return {...state, email: action.email, firstName: action.firstName, lastName: action.lastName, position: action.position, password: action.password};
 
         case TypeKeys.REGISTER_SUCCESS_ACTION:
-            return {...state, email: action.email, username: action.username, password: action.password};
+            return {...state, email: null, firstName: null, lastName: null, position: null, password: null};
 
         case TypeKeys.OPEN_ERROR_MESSAGE_ACTION:
             return {...state, isErrorMessageOpened: true, errorMessage: action.errorMessage};

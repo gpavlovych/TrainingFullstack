@@ -44,7 +44,10 @@ export interface LogoutRequestAction {
 
 export interface RegisterRequestAction {
     type: TypeKeys.REGISTER_REQUEST_ACTION;
-    username: string;
+    userPhoto: any;
+    firstName: string;
+    lastName: string;
+    position: string;
     email: string;
     password: string;
     callback: ()=>{};
@@ -68,7 +71,7 @@ export interface OpenSignInFormAction {
 
 export interface LoginSuccessAction {
     type: TypeKeys.LOGIN_SUCCESS_ACTION;
-    username: string;
+    currentUserId: string;
     token: string;
 }
 
@@ -83,9 +86,6 @@ export interface CloseErrorMessageAction {
 
 export interface RegisterSuccessAction {
     type: TypeKeys.REGISTER_SUCCESS_ACTION;
-    username: string;
-    email: string;
-    password: string;
 }
 
 export interface OtherAction {

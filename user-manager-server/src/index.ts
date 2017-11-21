@@ -1,3 +1,4 @@
+///<reference path="../node_modules/@types/node/index.d.ts"/>
 import * as Koa from 'koa';
 import * as Router from "koa-router";
 import * as json from "koa-json";
@@ -25,28 +26,37 @@ const database = init({host: config.host});
 
 const router = new Router();
 router
-    .get('/api/v1/users/:username/photo', jwt,async ctx=>{
-        let user = await database.userModel.findOne({username: ctx.params.username});
+    .get('/api/v1/users/:id/photo', jwt,async (ctx: any)=>{
+        let id = ctx.params.id;
+        console.log(`Getting photo of the user ${id}`);
+        let user = await database.userModel.findById(id);
         if (user !== null) {
-            ctx.response.type = user.userphoto.contentType;
-            ctx.body = user.userphoto.data;
+            ctx.response.type = user.userPhoto.contentType;
+            ctx.body = user.userPhoto.data;
         }
     })
-    .get('/api/v1/users/:username', jwt,async ctx=>{
-        ctx.body = await database.userModel.findOne({username: ctx.params.username});
+    .get('/api/v1/users/:id', jwt,async (ctx: any)=>{
+        let id = ctx.params.id;
+        console.log(`Getting details of the user ${id}`);
+        ctx.body = await database.userModel.findById(id);
     })
-    .get('/api/v1/users', jwt,async ctx=>{
+    .get('/api/v1/users', jwt,async (ctx: any)=>{
+        console.log(`Getting all users`);
         ctx.body = await database.userModel.find({});
     })
-    .post('/api/v1/users', async ctx=>{
-        let user = new database.userModel(ctx.request.body);
+    .post('/api/v1/users', async (ctx: any)=>{
+        let model = ctx.request.body;
+        console.log(`Registering new user: ${JSON.stringify(model)}`);
+        let user = new database.userModel(model);
         await user.save();
         ctx.body = user;
         ctx.response.status = 201;
     })
-    .put('/api/v1/users/:username', jwt, async ctx=> {
+    .put('/api/v1/users/:id', jwt, async (ctx: any)=> {
+        let id = ctx.params.id;
         let model = ctx.request.body;
-        let user = await database.userModel.findOne({username: ctx.params.username});
+        console.log(`Editing the user ${id}: ${JSON.stringify(model)}`);
+        let user = await database.userModel.findById(id);
         console.log(user);
         if (user !== null) {
             user.password = model.password;
@@ -54,34 +64,30 @@ router
             ctx.body = user;
         }
     })
-    .post('/api/v1/users/:username/photo', async ctx=>{
-        console.log("here ami");
-        const file = ctx.request.body;
-        console.log(file);
+    .post('/api/v1/users/:id/photo', async (ctx: any)=>{
+        let id = ctx.params.id;
+        let model = ctx.request.body;
+        console.log(`Uploading photo for the user ${ctx.params.id}: ${JSON.stringify(model)}`);
+        console.log("Files: ", ctx.request.body.files);
+        console.log("Fields: ", ctx.request.body.fields);
     })
-    .del('/api/v1/users/:username', jwt, async ctx=> {
-        let user = await database.userModel.findOne({username: ctx.params.username});
+    .del('/api/v1/users/:id', jwt, async (ctx: any)=> {
+        console.log(`Removing the user ${ctx.params.id}`);
+        let user = await database.userModel.findById(ctx.params.id);
         if (user !== null) {
             ctx.body = user;
             await user.remove();
         }
     });
 
-router.post('/token', async (ctx)=> {
+router.post('/token', async (ctx: any)=> {
     let model: ILoginModel = ctx.request.body;
-    console.log(model);
-    let user = await database.userModel.findOne({username: model.username});
-    console.log(user);
-    if (user === null) {
-        user = await database.userModel.findOne({email: model.username});
-    }
-
-    console.log(user);
+    let user = await database.userModel.findOne({email: model.username});
     if (user !== null && user.password === model.password) {
         let expiresInSeconds = 40;
         ctx.status = 200;
         ctx.body = {
-            username: user.username,
+            id: user._id,
             token: JwtFunc.sign({userId: user._id}, secretKey, {'expiresIn': expiresInSeconds}),
             expiresInSeconds: expiresInSeconds
         };

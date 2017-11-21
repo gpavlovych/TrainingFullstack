@@ -1,10 +1,12 @@
 import * as mongoose from "mongoose";
 
 export interface IUser extends mongoose.Document {
-    username: string;
+    firstName: string;
+    lastName: string;
+    position: string;
     email: string;
     password: string;
-    userphoto: any;
+    userPhoto: any;
 }
 
 export const UserSchema = new mongoose.Schema({
@@ -13,13 +15,21 @@ export const UserSchema = new mongoose.Schema({
         unique: true,
         required: true
     },
-    userphoto: {
-      data: Buffer,
-      contentType: String
+    userPhoto: {
+        data: Buffer,
+        contentType: String,
+        required: false,
     },
-    username: {
+    firstName: {
         type: String,
-        unique: true,
+        required: true
+    },
+    lastName: {
+        type: String,
+        required: true
+    },
+    position: {
+        type: String,
         required: true
     },
     password: {
