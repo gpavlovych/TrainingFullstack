@@ -2,10 +2,11 @@ import * as React from "react";
 
 import {
     Tab,
-    Button,
-    Col, Form, FormControl, FormGroup, Glyphicon, InputGroup, Jumbotron, Modal, Nav, NavItem,
+    Col, Jumbotron, Modal, Nav, NavItem,
     Row
 } from "react-bootstrap";
+import {SignUpForm} from "./SignUpForm";
+import {SignInForm} from "./SignInForm";
 const logo = require("../navbar-logo.png");
 
 export enum LoginTab {
@@ -18,7 +19,7 @@ export interface ILoginProps {
     tab: LoginTab;
     onClose(): {};
     onLogin(username: string, password: string): {};
-    onRegister(username: string, email: string, password: string): {};
+    onRegister(firstname: string, lastname: string, position: string, email: string, password: string): {};
 }
 
 export interface ILoginState{
@@ -26,7 +27,9 @@ export interface ILoginState{
     tab: LoginTab;
     signInLogin: string;
     signInPassword: string;
-    signUpUsername: string;
+    signUpPosition: string,
+    signUpFirstname: string,
+    signUpLastname: string,
     signUpLogin: string;
     signUpPassword: string;
     signUpConfirmPassword: string;
@@ -40,7 +43,9 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
             tab: props.tab,
             signInLogin: "",
             signInPassword: "",
-            signUpUsername: "",
+            signUpPosition: "",
+            signUpFirstname: "",
+            signUpLastname: "",
             signUpLogin: "",
             signUpPassword: "",
             signUpConfirmPassword: ""
@@ -60,7 +65,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
     }
 
     register(){
-        this.props.onRegister(this.state.signUpUsername, this.state.signUpLogin, this.state.signUpPassword);
+        this.props.onRegister(this.state.signUpFirstname, this.state.signUpLastname, this.state.signUpPosition, this.state.signUpLogin, this.state.signUpPassword);
         this.closeWindow();
     }
 
@@ -73,11 +78,6 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
         if (nextProps.isOpened !== this.state.isOpened) {
             this.setState({ isOpened: nextProps.isOpened });
         }
-    }
-
-    handleChange(e: any) {
-        const { name, value } = e.target;
-        this.setState({ [name]: value });
     }
 
     render() {
@@ -105,75 +105,21 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
                         <Col sm={12}>
                             <Tab.Content animation>
                                 <Tab.Pane eventKey={LoginTab.SignIn}>
-                                    <Form style={{marginTop: "10px"}}>
-                                        <FormGroup>
-                                            <InputGroup>
-                                                <InputGroup.Addon>
-                                                    <Glyphicon glyph="envelope" />
-                                                </InputGroup.Addon>
-                                                <FormControl type="text" placeholder="Work Email" name="signInLogin" value={this.state.signInLogin} onChange={e=>this.handleChange(e)}/>
-                                            </InputGroup>
-                                        </FormGroup>
-                                        <FormGroup>
-                                            <InputGroup>
-                                                <InputGroup.Addon>
-                                                    <Glyphicon glyph="lock" />
-                                                </InputGroup.Addon>
-                                                <FormControl type="password" placeholder="Your Password" name="signInPassword" value={this.state.signInPassword} onChange={e=>this.handleChange(e)}/>
-                                            </InputGroup>
-                                        </FormGroup>
-                                        <FormGroup>
-                                            <FormControl.Static>
-                                                Don't remember your password?
-                                            </FormControl.Static>
-                                        </FormGroup>
-                                    </Form>
+                                    <SignInForm submit={(email: string, password: string)=>this.props.onLogin(email, password)}/>
                                 </Tab.Pane>
                                 <Tab.Pane eventKey={LoginTab.SignUp}>
-                                    <Form style={{marginTop: "10px"}}>
-                                        <FormGroup>
-                                            <InputGroup>
-                                                <InputGroup.Addon>
-                                                    <Glyphicon glyph="envelope" />
-                                                </InputGroup.Addon>
-                                                <FormControl type="text" placeholder="User Name" name="signUpUsername" value={this.state.signUpUsername} onChange={e=>this.handleChange(e)}/>
-                                            </InputGroup>
-                                        </FormGroup>
-                                        <FormGroup>
-                                            <InputGroup>
-                                                <InputGroup.Addon>
-                                                    <Glyphicon glyph="envelope" />
-                                                </InputGroup.Addon>
-                                                <FormControl type="text" placeholder="Work Email" name="signUpLogin" value={this.state.signUpLogin} onChange={e=>this.handleChange(e)}/>
-                                            </InputGroup>
-                                        </FormGroup>
-                                        <FormGroup>
-                                            <InputGroup>
-                                                <InputGroup.Addon>
-                                                    <Glyphicon glyph="lock" />
-                                                </InputGroup.Addon>
-                                                <FormControl type="password" placeholder="Your Password" name="signUpPassword" value={this.state.signUpPassword} onChange={e=>this.handleChange(e)}/>
-                                            </InputGroup>
-                                        </FormGroup>
-                                        <FormGroup>
-                                            <InputGroup>
-                                                <InputGroup.Addon>
-                                                    <Glyphicon glyph="lock" />
-                                                </InputGroup.Addon>
-                                                <FormControl type="password" placeholder="Confirm Password" name="signUpConfirmPassword" value={this.state.signUpConfirmPassword} onChange={e=>this.handleChange(e)}/>
-                                            </InputGroup>
-                                        </FormGroup>
-                                    </Form>
+                                    <SignUpForm submit={(userPhoto: Blob|undefined,
+                                                         position: string,
+                                                         firstName: string,
+                                                         lastName: string,
+                                                         email: string,
+                                                         password: string)=>this.props.onRegister(firstName, lastName, position, email, password)}/>
                                 </Tab.Pane>
                             </Tab.Content>
                         </Col>
                     </Row>
                 </Tab.Container>
             </Modal.Body>
-            <Modal.Footer>
-                {this.state.tab==LoginTab.SignIn && <Button bsStyle="primary" block onClick={()=>this.login()}>Login<Glyphicon glyph="chevron-right"/></Button>}
-                {this.state.tab==LoginTab.SignUp && <Button bsStyle="primary" block onClick={()=>this.register()}>Register<Glyphicon glyph="chevron-right"/></Button>}
-            </Modal.Footer>
         </Modal>
     }
 }

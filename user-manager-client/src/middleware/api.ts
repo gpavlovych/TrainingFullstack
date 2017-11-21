@@ -25,6 +25,13 @@ const request = async (method: string, url: string, {payload, token}: any): Prom
         });
 };
 
+const get = async (url: string, token: string ) => {
+    let response = await request("GET", url, {token});
+    let responseBody = response.json();
+    console.log(`response body: ${responseBody}`);
+    return responseBody;
+};
+
 const post = async (url: string, payload: any) => {
     let response = await request("POST", url, {payload});
     let responseBody = response.json();
@@ -37,5 +44,9 @@ export const login = async (payload:any)=> {
 };
 
 export const register = async (payload: any) =>{
-    return await fetch("http://localhost:4245/api/v1/users",payload);
+    return await post("http://localhost:4245/api/v1/users",payload);
+};
+
+export const getUsers = async (jwt: string) =>{
+    return await get("http://localhost:4245/api/v1/users", jwt);
 };

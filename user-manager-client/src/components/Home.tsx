@@ -3,11 +3,11 @@ import Header from "./Header";
 import {connect} from "react-redux";
 import UserProfileItem from "./UserProfileItem";
 import {TypeKeys} from "../middleware/actions";
-import {Grid, Row, Col} from "react-bootstrap";
+import {Grid, Row, Col } from "react-bootstrap";
 
 class Home extends React.Component<any> {
     componentWillMount(){
-        this.props.dispatch({type: TypeKeys.GET_USERS_REQUEST_ACTION});
+        this.props.dispatch({type: TypeKeys.GET_USERS_REQUEST_ACTION, token: this.props.data.token});
     }
     render() {
         return (
@@ -15,7 +15,7 @@ class Home extends React.Component<any> {
                 <Header {...this.props}/>
                     <Grid>
                         <Row>
-                            {(this.props.data.users||[]).map((user: any) => <Col xs={12} sm={3}> <UserProfileItem {...user}/></Col>)}
+                            {(this.props.data.users||[]).map((user: any) => <Col xs={12} sm={3} key={user._id} > <UserProfileItem {...user}/></Col>)}
                         </Row>
                     </Grid>
             </div>);

@@ -1,5 +1,5 @@
 import {call, fork, put, race, take} from "redux-saga/effects";
-import {login, register} from "./api";
+import {getUsers, login, register} from "./api";
 import {TypeKeys} from "./actions";
 
 export function * loginFlow (): IterableIterator<any> {
@@ -54,17 +54,17 @@ export function * registerFlow () {
 
 export function * logoutFlow () {
     while (true) {
-        let action = yield take(TypeKeys.LOGOUT_REQUEST_ACTION);
+        const {callback}= yield take(TypeKeys.LOGOUT_REQUEST_ACTION);
         yield put ({type: TypeKeys.LOGOUT_SUCCESS_ACTION});
-        const {callback} = action;
         callback();
     }
 }
 
 export function * getAllUsersFlow(){
     while (true) {
-        yield take(TypeKeys.GET_USERS_REQUEST_ACTION);
-        yield put ({type: TypeKeys.GET_USERS_SUCCESS_ACTION, users: [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]});
+        const {token} = yield take(TypeKeys.GET_USERS_REQUEST_ACTION);
+        const usersResponse = yield call(getUsers, token);
+        yield put ({type: TypeKeys.GET_USERS_SUCCESS_ACTION, users: usersResponse});
     }
 }
 // single entry point to start all Sagas at once

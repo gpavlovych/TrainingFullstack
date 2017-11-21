@@ -1,13 +1,12 @@
 import * as React from "react";
-import {Button, Thumbnail} from "react-bootstrap";
+import './UserProfileItem.css';
 const img = require("../neutral male.jpg");
 
-export default (()=>(
-    <Thumbnail src={img} alt="100x100">
-        <h3>Thumbnail label</h3>
-        <p>Description</p>
-        <p>
-            <Button bsStyle="primary">Button</Button>&nbsp;
-            <Button bsStyle="default">Button</Button>
-        </p>
-    </Thumbnail>));
+export default ((props: any)=>(
+    <div className="tileContainer">
+        <a className="photoContainer">
+            <img src={img} width={150}/>
+        </a>
+        <h3>John Doe</h3>
+        <p>Senior software developer</p>
+    </div>));

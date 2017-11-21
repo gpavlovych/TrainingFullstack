@@ -16,6 +16,7 @@ export enum TypeKeys {
 
 export interface GetUsersRequestAction {
     type: TypeKeys.GET_USERS_REQUEST_ACTION;
+    token: string;
 }
 
 export interface GetUsersSuccessAction {
