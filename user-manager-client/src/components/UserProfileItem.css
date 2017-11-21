@@ -1,0 +1,19 @@
+.tileContainer {
+    text-align: center;
+    align-content: center;
+    margin-bottom: 100px;
+    color: gray;
+}
+.photoContainer
+{
+    display: inline-block;
+    width: 150px;
+    height: 150px;
+    border: solid 1px lightgray;
+    border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
