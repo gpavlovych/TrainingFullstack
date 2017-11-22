@@ -49,17 +49,17 @@ export const login = async ({email, password}: any)=> {
     return await post("http://localhost:4245/token",{body: JSON.stringify({username: email, password}), contentType: "application/json"});
 };
 
-export const register = async ({email, password, firstName, lastName, position}: any) =>{
-    let payload = {email, password, firstName, lastName, position};
-    console.log(payload);
-    return await post("http://localhost:4245/api/v1/users",{body: JSON.stringify(payload), contentType: "application/json"});
-};
-
-export const uploadPhoto = async ({id, photo, token}: any) =>{
+export const register = async ({email, password, firstName, lastName, position, userPhoto}: any) =>{
     let formData = new FormData();
 
-    formData.append("file", photo, photo.name);
-    return await post(`http://localhost:4245/api/v1/users/${id}/photo`, {body: formData, token: token});
+    formData.append("userPhoto", userPhoto, userPhoto.name);
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("firstName", firstName);
+    formData.append("lastName", lastName);
+    formData.append("position", position);
+
+    return await post("http://localhost:4245/api/v1/users",{body: formData});
 };
 
 export const getUsers = async ({token}: any) =>{

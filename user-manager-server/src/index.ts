@@ -31,7 +31,7 @@ const database = init({host: config.host});
 
 const router = new Router();
 router
-    .get('/api/v1/users/:id/photo',jwt,async (ctx: any)=>{
+    .get('/api/v1/users/:id/photo',async (ctx: any)=>{
         let id = ctx.params.id;
         console.log(`Getting photo of the user ${id}`);
         let user = await database.userModel.findById(id);

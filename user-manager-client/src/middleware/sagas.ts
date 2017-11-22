@@ -1,5 +1,5 @@
 import {call, fork, put, race, take} from "redux-saga/effects";
-import {getUsers, login, register, uploadPhoto} from "./api";
+import {getUsers, login, register} from "./api";
 import {TypeKeys} from "./actions";
 
 export function * loginFlow (): IterableIterator<any> {
@@ -9,7 +9,8 @@ export function * loginFlow (): IterableIterator<any> {
         // And we're listening for `LOGIN_REQUEST` actions and destructuring its payload
         const action = yield take(TypeKeys.LOGIN_REQUEST_ACTION);
         const {email, password, callback} = action;
-        try {
+        //try
+        {
             // A `LOGOUT` action may happen while the `authorize` effect is going on, which may
             // lead to a race condition. This is unlikely, but just in case, we call `race` which
             // returns the "winner", i.e. the one that finished first
@@ -30,9 +31,10 @@ export function * loginFlow (): IterableIterator<any> {
                 //   yield put({type: CHANGE_FORM, newFormState: {username: '', password: ''}});// Clear form
                 callback(); // Go to dashboard page
             }
-        }
+        /*}
         catch (error) {
             yield put({type: TypeKeys.OPEN_ERROR_MESSAGE_ACTION, errorMessage: "Login failed! Your username and/or password might be incorrect."});
+        }*/
         }
     }
 }
@@ -46,7 +48,7 @@ export function * registerFlow () {
         {
             // We call the `authorize` task with the data, telling it that we are registering a user
             // This returns `true` if the registering was successful, `false` if not
-            const registerResponse = yield call(register, {email, password, firstName, lastName, position});
+            const registerResponse = yield call(register, {email, password, firstName, lastName, position, userPhoto});
 
             // If we could register a user, we send the appropiate actions
             if (registerResponse) {
@@ -54,9 +56,6 @@ export function * registerFlow () {
                 if (loginResponse) {
                     let currentUserId = loginResponse.id;
                     let token = loginResponse.token;
-                    if (userPhoto) {
-                        yield call(uploadPhoto, {id: currentUserId, photo: userPhoto, token});
-                    }
 
                     yield put({
                         type: TypeKeys.LOGIN_SUCCESS_ACTION,
@@ -69,7 +68,7 @@ export function * registerFlow () {
             }
         }
        // catch (error){
-            yield put({type: TypeKeys.OPEN_ERROR_MESSAGE_ACTION, errorMessage: "Sign up failed!"});
+        //    yield put({type: TypeKeys.OPEN_ERROR_MESSAGE_ACTION, errorMessage: "Sign up failed!"});
    //     }
     }
 }
