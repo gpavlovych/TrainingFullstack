@@ -4,6 +4,7 @@
   "description": "Backend for the User Manager",
   "main": "index.js",
   "scripts": {
+    "postinstall": "mkdirp ./src/public/uploads",
     "start": "nodemon ./src/index.ts",
     "test": "mocha -r ts-node/register test/**/*.ts"
   },
@@ -40,6 +41,7 @@
     "@types/multer": "^1.3.6",
     "chai": "^4.1.2",
     "chai-http": "^3.0.0",
+    "mkdirp": "^0.5.1",
     "mocha": "^4.0.1",
     "mocha-typescript": "^1.1.12",
     "nodemon": "^1.12.1",
