@@ -40,7 +40,7 @@ describe("API test", () => {
         });
     });
 
-    describe("register", () => {
+    describe("getUsers", () => {
         it("failed", async () => {
             verifyApiRequestFailed(async () => await getUsers({token:"sometoken"}));
         });
