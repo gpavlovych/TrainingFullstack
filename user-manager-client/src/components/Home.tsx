@@ -1,31 +1,43 @@
 import * as React from "react";
-import Header from "./Header";
-import {connect} from "react-redux";
+import {Header} from "./Header";
+import {connect, Dispatch} from "react-redux";
 import UserProfileItem from "./UserProfileItem";
-import {TypeKeys} from "../middleware/actions";
+import {createGetUserRequestAction} from "../middleware/actions";
 import {Grid, Row, Col } from "react-bootstrap";
+import {RootState} from "../middleware/reducers";
 
-class Home extends React.Component<any> {
+interface IHomeProps {
+    currentUserToken: string;
+    history?: any;
+    users: any[];
+    onLoad: (token: string)=>any;
+}
+
+class Home extends React.Component<IHomeProps> {
     componentWillMount(){
-        this.props.dispatch({type: TypeKeys.GET_USERS_REQUEST_ACTION, token: this.props.data.token});
+        this.props.onLoad(this.props.currentUserToken);
     }
     render() {
+        let users = this.props.users || [];
         return (
             <div>
-                <Header {...this.props}/>
+                <Header {...this.props} />
                     <Grid>
                         <Row>
-                            {(this.props.data.users||[]).map((user: any) => <Col xs={12} sm={3} key={user._id} > <UserProfileItem {...user}/></Col>)}
+                            {users.map((user: any) => <Col xs={12} sm={3} key={user._id} > <UserProfileItem {...user}/></Col>)}
                         </Row>
                     </Grid>
             </div>);
     }
 }
 
-function select (state: any) {
-    return {
-        data: state
-    }
-}
+const mapStateToProps = (state: RootState) => ({
+    currentUserToken: state.currentUserToken,
+    users: state.users
+});
 
-export default connect(select)(Home);
+const mapDispatchToProps = (dispatch: Dispatch<RootState>) => ({
+   onLoad: (token: string)=>dispatch(createGetUserRequestAction(token))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

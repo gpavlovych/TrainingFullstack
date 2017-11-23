@@ -16,25 +16,33 @@ const request = async (method: string, url: string, {body, token, contentType}: 
 
     return await fetch(url, options)
         .then(result => {
-            console.log(`success; response: ${result}`);
+            if (result.ok) {
+                console.log(`success; status: ${result.status} ${result.statusText}`);
+            }
+            else {
+                throw `error; response:  ${result.status} ${result.statusText}`
+            }
+
+            debugger;
             return result;
         })
         .catch(error => {
             console.log(`error; response: ${error}`);
+            throw error;
         });
 };
 
 const get = async (url: string, token: string ) => {
     let response = await request("GET", url, {token});
-    let responseBody = response.json();
-    console.log(`response body: ${responseBody}`);
+    let responseBody = await response.json();
+    console.log(`response body: ${JSON.stringify(responseBody)}`);
     return responseBody;
 };
 
 const post = async (url: string, {body, token, contentType}: any) => {
     let response = await request("POST", url, {body, token, contentType});
-    let responseBody = response.json();
-    console.log(`response body: ${responseBody}`);
+    let responseBody = await response.json();
+    console.log(`response body: ${JSON.stringify(responseBody)}`);
     return responseBody;
 };
 /*
@@ -51,8 +59,10 @@ export const login = async ({email, password}: any)=> {
 
 export const register = async ({email, password, firstName, lastName, position, userPhoto}: any) =>{
     let formData = new FormData();
+    if (userPhoto) {
+        formData.append("userPhoto", userPhoto, userPhoto.name);
+    }
 
-    formData.append("userPhoto", userPhoto, userPhoto.name);
     formData.append("email", email);
     formData.append("password", password);
     formData.append("firstName", firstName);

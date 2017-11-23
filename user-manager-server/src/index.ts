@@ -124,29 +124,38 @@ router
         }
     })
     .del('/api/v1/users/:id', jwt, async (ctx: any)=> {
-        console.log(`Removing the user ${ctx.params.id}`);
-        let user = await database.userModel.findById(ctx.params.id);
+        let id = ctx.params.id;
+        console.log(`Removing the user ${id}`);
+        let user = await database.userModel.findById(id);
         if (user !== null) {
             ctx.body = user;
             await user.remove();
+            console.log(`Removed the user ${id}`);
         }
     });
 
 router.post('/token', async (ctx: any)=> {
     let model: ILoginModel = ctx.request.body;
     console.log(`Issuing the token ${JSON.stringify(model)}`);
-    let user = await database.userModel.findOne({email: model.username});
+    let user = await database.userModel.findOne({email: model.username}, '_id firstName lastName email position password');
     if (user !== null && user.password === model.password) {
         let expiresInSeconds = 40;
         ctx.status = 200;
-        ctx.body = {
-            id: user._id,
-            token: JwtFunc.sign({userId: user._id}, secretKey, {'expiresIn': expiresInSeconds}),
+        let {firstName, lastName, position, _id} = user;
+        let responseBody = {
+            _id,
+            firstName,
+            lastName,
+            position,
+            token: JwtFunc.sign({userId: _id}, secretKey, {'expiresIn': expiresInSeconds}),
             expiresInSeconds: expiresInSeconds
         };
+        ctx.body = responseBody;
+        console.log(`Issued the token ${JSON.stringify(responseBody)}`);
     }
     else {
         ctx.status = 401;
+        console.log(`Invalid username and/or password`);
     }
 });
 

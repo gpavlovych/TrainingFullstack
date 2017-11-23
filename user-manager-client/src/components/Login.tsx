@@ -7,63 +7,43 @@ import {
 } from "react-bootstrap";
 import {SignUpForm} from "./SignUpForm";
 import {SignInForm} from "./SignInForm";
+import {connect, Dispatch} from "react-redux";
+import {RootState} from "../middleware/reducers";
+import {
+    createCloseSignInFormAction, createLoginRequestAction, createOpenSignInFormAction, createOpenSignUpFormAction,
+    createRegisterRequestAction
+} from "../middleware/actions";
 const logo = require("../navbar-logo.png");
 
-export enum LoginTab {
+enum LoginTab {
     SignIn="signIn",
     SignUp="signUp"
 }
 
-export interface ILoginProps {
-    isOpened: boolean;
+interface ILoginProps {
     tab: LoginTab;
-    onClose(): {};
-    onLogin(email: string, password: string): {};
-    onRegister(userPhoto: Blob|null, firstName: string, lastName: string, position: string, email: string, password: string): {};
+    isOpened: boolean;
+    history: any;
+    onClose: () => any;
+    onLogin: (email: string, password: string, callback: ()=> void) => any;
+    onRegister: (userPhoto: Blob|null,
+                 position: string,
+                 firstName: string,
+                 lastName: string,
+                 email: string,
+                 password: string,
+                 callback: ()=> void) => any;
+    onTabOpened: (tab: LoginTab) => any;
 }
 
-export interface ILoginState{
-    isOpened: boolean;
-    tab: LoginTab;
-}
-
-export class Login extends React.Component<ILoginProps, ILoginState> {
-    constructor(props: ILoginProps) {
-        super(props);
-        this.state = {
-            isOpened: props.isOpened,
-            tab: props.tab
-        };
-    }
-    private closeWindow(){
-        this.setState({isOpened: false});
-    }
-    close() {
-        this.props.onClose();
-        this.closeWindow();
-    }
-
-    componentWillReceiveProps(nextProps: ILoginProps) {
-        // You don't have to do this check first, but it can help prevent an unneeded render
-        if (nextProps.tab !== this.state.tab) {
-            this.setState({ tab: nextProps.tab });
-        }
-
-        if (nextProps.isOpened !== this.state.isOpened) {
-            this.setState({ isOpened: nextProps.isOpened });
-        }
-    }
-
-    render() {
-        // tab accepting current url
-        return <Modal bsSize="small" show={this.state.isOpened} aria-labelledby="contained-modal-title-lg" onHide={()=>this.close()}>
+const Login: React.StatelessComponent<ILoginProps> = (props: ILoginProps) => (<Modal bsSize="small" show={props.isOpened} aria-labelledby="contained-modal-title-lg" onHide={()=>props.onClose()}>
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-lg">
                     <Jumbotron style={{textAlign: 'center'}}>
                         <img style={{marginLeft: 'auto', marginRight: 'auto', display: 'block', width: '70px'}} src={logo}/>
                         <h2>Auth0</h2>
                     </Jumbotron>
-                    <Nav bsStyle="tabs" justified onSelect={(key: any)=>this.setState({tab: key})} activeKey={this.state.tab}>
+                    <Nav bsStyle="tabs" justified onSelect={(tab: any)=>props.onTabOpened(tab)} activeKey={props.tab}>
                         <NavItem eventKey={LoginTab.SignIn}>
                             Sign In
                         </NavItem>
@@ -74,12 +54,12 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Tab.Container id="tabs-login" activeKey={this.state.tab}>
+                <Tab.Container id="tabs-login" activeKey={props.tab}  onSelect={(tab: any)=>props.onTabOpened(tab)} >
                     <Row className="clearfix">
                         <Col sm={12}>
                             <Tab.Content animation>
                                 <Tab.Pane eventKey={LoginTab.SignIn}>
-                                    <SignInForm submit={(email: string, password: string)=>this.props.onLogin(email, password)}/>
+                                    <SignInForm submit={(email: string, password: string)=>props.onLogin(email, password, ()=>props.history.push("/dashboard"))} />
                                 </Tab.Pane>
                                 <Tab.Pane eventKey={LoginTab.SignUp}>
                                     <SignUpForm submit={(userPhoto: Blob|null,
@@ -87,13 +67,38 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
                                                          firstName: string,
                                                          lastName: string,
                                                          email: string,
-                                                         password: string)=>this.props.onRegister(userPhoto, firstName, lastName, position, email, password)}/>
+                                                         password: string)=>props.onRegister(userPhoto, firstName, lastName, position, email, password, ()=>props.history.push("/dashboard"))} />
                                 </Tab.Pane>
                             </Tab.Content>
                         </Col>
                     </Row>
                 </Tab.Container>
             </Modal.Body>
-        </Modal>
+        </Modal>);
+
+const mapStateToProps = (state: RootState) => ({
+    isOpened: state.isSignInFormOpened || state.isSignUpFormOpened,
+    tab: state.isSignUpFormOpened? LoginTab.SignUp: LoginTab.SignIn
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<RootState>) => ({
+    onClose: () => dispatch(createCloseSignInFormAction()),
+    onLogin: (email: string, password: string, callback: ()=> void) => {dispatch(createLoginRequestAction(email, password, callback))},
+    onRegister: (userPhoto: Blob|null,
+                 position: string,
+                 firstName: string,
+                 lastName: string,
+                 email: string,
+                 password: string,
+                 callback: ()=> void) => dispatch(createRegisterRequestAction(userPhoto, firstName, lastName, position, email, password, callback)),
+    onTabOpened: (tab: LoginTab) => {
+        if (tab === LoginTab.SignIn){
+            dispatch(createOpenSignInFormAction());
+        }
+        else {
+            dispatch(createOpenSignUpFormAction());
+        }
     }
-}
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

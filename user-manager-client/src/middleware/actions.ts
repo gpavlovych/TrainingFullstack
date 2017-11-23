@@ -21,26 +21,59 @@ export interface GetUsersRequestAction {
     token: string;
 }
 
+export const createGetUserRequestAction = (token: string): GetUsersRequestAction =>{
+    return {type: TypeKeys.GET_USERS_REQUEST_ACTION, token};
+};
+
 export interface GetUsersSuccessAction {
     type: TypeKeys.GET_USERS_SUCCESS_ACTION;
     users: any[];
 }
 
-export interface LoginRequestAction{
+export const createGetUsersSuccessAction = (users: any[]): GetUsersSuccessAction => {
+  return {type: TypeKeys.GET_USERS_SUCCESS_ACTION, users};
+};
+
+export interface LoginRequestAction {
     type: TypeKeys.LOGIN_REQUEST_ACTION;
     email: string;
     password: string;
-    callback: ()=>{};
+    callback: ()=>void;
 }
+
+export const createLoginRequestAction = (email: string, password: string, callback: ()=>void): LoginRequestAction => {
+    return {type: TypeKeys.LOGIN_REQUEST_ACTION, email, password, callback};
+};
+
+export interface LoginSuccessAction {
+    type: TypeKeys.LOGIN_SUCCESS_ACTION;
+    currentUserId: string;
+    token: string;
+    currentUserFirstName: string;
+    currentUserLastName: string;
+    currentUserPosition: string;
+}
+
+export const createLoginSuccessAction = (currentUserId: string, currentUserFirstName: string, currentUserLastName: string, currentUserPosition: string, token: string): LoginSuccessAction => {
+    return {type: TypeKeys.LOGIN_SUCCESS_ACTION, currentUserId, currentUserFirstName, currentUserLastName, currentUserPosition, token};
+};
+
+export interface LogoutRequestAction {
+    type: TypeKeys.LOGOUT_REQUEST_ACTION;
+    callback: ()=>void;
+}
+
+export const createLogoutRequestAction = (callback: ()=>void): LogoutRequestAction => {
+    return {type: TypeKeys.LOGOUT_REQUEST_ACTION, callback};
+};
 
 export interface LogoutSuccessAction {
     type: TypeKeys.LOGOUT_SUCCESS_ACTION;
 }
 
-export interface LogoutRequestAction {
-    type: TypeKeys.LOGOUT_REQUEST_ACTION;
-    callback: ()=>{};
-}
+export const createLogoutSuccessAction = (): LogoutSuccessAction => {
+    return {type: TypeKeys.LOGOUT_SUCCESS_ACTION};
+};
 
 export interface RegisterRequestAction {
     type: TypeKeys.REGISTER_REQUEST_ACTION;
@@ -50,43 +83,84 @@ export interface RegisterRequestAction {
     position: string;
     email: string;
     password: string;
-    callback: ()=>{};
+    callback: ()=>void;
 }
+
+export const createRegisterRequestAction = (userPhoto: any,
+        firstName: string,
+        lastName: string,
+        position: string,
+        email: string,
+        password: string,
+        callback: ()=>void): RegisterRequestAction => {
+    return {
+        type: TypeKeys.REGISTER_REQUEST_ACTION,
+        userPhoto,
+        firstName,
+        lastName,
+        position,
+        email,
+        password,
+        callback
+    };
+};
 
 export interface CloseSignInFormAction {
     type: TypeKeys.CLOSE_SIGNIN_FORM_ACTION;
 }
 
+export const createCloseSignInFormAction = (): CloseSignInFormAction => {
+    return {type: TypeKeys.CLOSE_SIGNIN_FORM_ACTION};
+};
+
 export interface CloseSignUpFormAction {
     type: TypeKeys.CLOSE_SIGNUP_FORM_ACTION;
 }
+
+export const createCloseSignUpFormAction = (): CloseSignUpFormAction => {
+    return {type: TypeKeys.CLOSE_SIGNUP_FORM_ACTION};
+};
 
 export interface OpenSignUpFormAction {
     type: TypeKeys.OPEN_SIGNUP_FORM_ACTION;
 }
 
+export const createOpenSignUpFormAction = (): OpenSignUpFormAction => {
+    return {type: TypeKeys.OPEN_SIGNUP_FORM_ACTION};
+};
+
 export interface OpenSignInFormAction {
     type: TypeKeys.OPEN_SIGNIN_FORM_ACTION;
 }
 
-export interface LoginSuccessAction {
-    type: TypeKeys.LOGIN_SUCCESS_ACTION;
-    currentUserId: string;
-    token: string;
-}
+export const createOpenSignInFormAction = (): OpenSignInFormAction => {
+    return {type: TypeKeys.OPEN_SIGNIN_FORM_ACTION};
+};
 
 export interface OpenErrorMessageAction {
     type: TypeKeys.OPEN_ERROR_MESSAGE_ACTION;
     errorMessage: string;
 }
 
+export const createOpenErrorMessageAction = (errorMessage: string): OpenErrorMessageAction => {
+    return {type: TypeKeys.OPEN_ERROR_MESSAGE_ACTION, errorMessage};
+};
+
 export interface CloseErrorMessageAction {
     type: TypeKeys.CLOSE_ERROR_MESSAGE_ACTION;
 }
 
+export const createCloseErrorMessageAction = (): CloseErrorMessageAction => {
+    return {type: TypeKeys.CLOSE_ERROR_MESSAGE_ACTION};
+};
+
 export interface RegisterSuccessAction {
     type: TypeKeys.REGISTER_SUCCESS_ACTION;
 }
+
+export const createRegisterSuccessAction = (): RegisterSuccessAction => {
+    return {type: TypeKeys.REGISTER_SUCCESS_ACTION};
+};
 
 export interface OtherAction {
     type: TypeKeys.OTHER_ACTION;

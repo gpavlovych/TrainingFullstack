@@ -1,6 +1,10 @@
 import {call, fork, put, race, take} from "redux-saga/effects";
 import {getUsers, login, register} from "./api";
-import {TypeKeys} from "./actions";
+import {
+    createCloseSignInFormAction, createCloseSignUpFormAction, createGetUsersSuccessAction, createLoginSuccessAction,
+    createLogoutSuccessAction, createOpenErrorMessageAction,
+    TypeKeys
+} from "./actions";
 
 export function * loginFlow (): IterableIterator<any> {
     // Because sagas are generators, doing `while (true)` doesn't block our program
@@ -9,7 +13,7 @@ export function * loginFlow (): IterableIterator<any> {
         // And we're listening for `LOGIN_REQUEST` actions and destructuring its payload
         const action = yield take(TypeKeys.LOGIN_REQUEST_ACTION);
         const {email, password, callback} = action;
-        //try
+        try
         {
             // A `LOGOUT` action may happen while the `authorize` effect is going on, which may
             // lead to a race condition. This is unlikely, but just in case, we call `race` which
@@ -19,22 +23,17 @@ export function * loginFlow (): IterableIterator<any> {
                 logout: take(TypeKeys.LOGOUT_REQUEST_ACTION)
             });
 
-            // If `authorize` was the winner...
             if (winner.loginResponse) {
-                // ...we send Redux appropiate actions
-                yield put({
-                    type: TypeKeys.LOGIN_SUCCESS_ACTION,
-                    currentUserId: winner.loginResponse.id,
-                    token: winner.loginResponse.token
-                });// User is logged in (authorized)
-                yield put({type: TypeKeys.CLOSE_SIGNIN_FORM_ACTION});
-                //   yield put({type: CHANGE_FORM, newFormState: {username: '', password: ''}});// Clear form
-                callback(); // Go to dashboard page
+                const {_id, firstName, lastName, position, token} = winner.loginResponse;
+                debugger;
+                yield put(createLoginSuccessAction(_id, firstName, lastName, position, token));
+                yield put(createCloseSignInFormAction());
+                callback();
             }
-        /*}
+        }
         catch (error) {
-            yield put({type: TypeKeys.OPEN_ERROR_MESSAGE_ACTION, errorMessage: "Login failed! Your username and/or password might be incorrect."});
-        }*/
+            debugger;
+            yield put(createOpenErrorMessageAction(error));
         }
     }
 }
@@ -44,7 +43,7 @@ export function * registerFlow () {
         // We always listen to `REGISTER_REQUEST` actions
         const action = yield take(TypeKeys.REGISTER_REQUEST_ACTION);
         const {email, password, firstName, lastName, position, userPhoto, callback} = action;
-        //try
+        try
         {
             // We call the `authorize` task with the data, telling it that we are registering a user
             // This returns `true` if the registering was successful, `false` if not
@@ -54,29 +53,24 @@ export function * registerFlow () {
             if (registerResponse) {
                 const loginResponse = yield call(login, {email, password});
                 if (loginResponse) {
-                    let currentUserId = loginResponse.id;
-                    let token = loginResponse.token;
+                    const {_id, firstName, lastName, position, token} = loginResponse;
 
-                    yield put({
-                        type: TypeKeys.LOGIN_SUCCESS_ACTION,
-                        currentUserId: currentUserId,
-                        token: token
-                    });// User is logged in (authorized)
-                    yield put({type: TypeKeys.CLOSE_SIGNUP_FORM_ACTION});
+                    yield put(createLoginSuccessAction(_id, firstName, lastName, position, token));// User is logged in (authorized)
+                    yield put(createCloseSignUpFormAction());
                     callback(); // Go to dashboard page
                 }
             }
         }
-       // catch (error){
-        //    yield put({type: TypeKeys.OPEN_ERROR_MESSAGE_ACTION, errorMessage: "Sign up failed!"});
-   //     }
+        catch (error) {
+           yield put(createOpenErrorMessageAction(error));
+        }
     }
 }
 
 export function * logoutFlow () {
     while (true) {
         const {callback}= yield take(TypeKeys.LOGOUT_REQUEST_ACTION);
-        yield put ({type: TypeKeys.LOGOUT_SUCCESS_ACTION});
+        yield put (createLogoutSuccessAction());
         callback();
     }
 }
@@ -86,10 +80,10 @@ export function * getAllUsersFlow() {
         const {token} = yield take(TypeKeys.GET_USERS_REQUEST_ACTION);
         try {
             const usersResponse = yield call(getUsers, {token});
-            yield put({type: TypeKeys.GET_USERS_SUCCESS_ACTION, users: usersResponse});
+            yield put(createGetUsersSuccessAction(usersResponse));
         }
         catch(error) {
-            yield put({type: TypeKeys.OPEN_ERROR_MESSAGE_ACTION, error: error});
+            yield put(createOpenErrorMessageAction(error));
         }
     }
 }
