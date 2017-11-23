@@ -36,17 +36,18 @@ describe("actions",()=> {
     });
 
     it("LoginSuccessAction", () => {
-        let expectedCurrentUserId = "currentUserId";
+        let expectedUserId = "userId";
         let expectedToken = "token";
-        let expectedCurrentUserFirstName = "currentUserFirstName";
-        let expectedCurrentUserLastName = "currentUserLastName";
-        let expectedCurrentUserPosition = "currentUserPosition";
-        let action = createLoginSuccessAction(expectedCurrentUserId, expectedCurrentUserFirstName, expectedCurrentUserLastName, expectedCurrentUserPosition, expectedToken);
+        let expectedUserFirstName = "userFirstName";
+        let expectedUserLastName = "userLastName";
+        let expectedUserPosition = "userPosition";
+        let expectedUserEmail = "UserEmail";
+        let action = createLoginSuccessAction(expectedUserId, expectedUserFirstName, expectedUserLastName, expectedUserPosition, expectedToken, expectedUserEmail);
         expect(action.type).toBe(TypeKeys.LOGIN_SUCCESS_ACTION);
-        expect(action.currentUserId).toBe(expectedCurrentUserId);
-        expect(action.currentUserFirstName).toBe(expectedCurrentUserFirstName);
-        expect(action.currentUserLastName).toBe(expectedCurrentUserLastName);
-        expect(action.currentUserPosition).toBe(expectedCurrentUserPosition);
+        expect(action.userId).toBe(expectedUserId);
+        expect(action.userFirstName).toBe(expectedUserFirstName);
+        expect(action.userLastName).toBe(expectedUserLastName);
+        expect(action.userPosition).toBe(expectedUserPosition);
         expect(action.token).toBe(expectedToken);
     });
 

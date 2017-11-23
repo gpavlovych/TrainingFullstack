@@ -11,8 +11,7 @@ export function * loginFlow (): IterableIterator<any> {
     // Basically here we say "this saga is always listening for actions"
     while (true) {
         // And we're listening for `LOGIN_REQUEST` actions and destructuring its payload
-        const action = yield take(TypeKeys.LOGIN_REQUEST_ACTION);
-        const {email, password, callback} = action;
+        const {email, password, callback} =  yield take(TypeKeys.LOGIN_REQUEST_ACTION);
         try
         {
             // A `LOGOUT` action may happen while the `authorize` effect is going on, which may
@@ -26,7 +25,7 @@ export function * loginFlow (): IterableIterator<any> {
             if (winner.loginResponse) {
                 const {_id, firstName, lastName, position, token} = winner.loginResponse;
                 debugger;
-                yield put(createLoginSuccessAction(_id, firstName, lastName, position, token));
+                yield put(createLoginSuccessAction(_id, firstName, lastName, position, token, email));
                 yield put(createCloseSignInFormAction());
                 callback();
             }
@@ -55,7 +54,7 @@ export function * registerFlow () {
                 if (loginResponse) {
                     const {_id, firstName, lastName, position, token} = loginResponse;
 
-                    yield put(createLoginSuccessAction(_id, firstName, lastName, position, token));// User is logged in (authorized)
+                    yield put(createLoginSuccessAction(_id, firstName, lastName, position, token, email));// User is logged in (authorized)
                     yield put(createCloseSignUpFormAction());
                     callback(); // Go to dashboard page
                 }

@@ -11,12 +11,6 @@ export interface RootState{
     currentUserPosition: any;
     currentUserToken: any;
     errorMessage?: string|null;
-    firstName?: string|null;
-    lastName?: string|null;
-    position?: string|null;
-    userPhoto?: Blob|null;
-    password?: string|null;
-    email?: string|null;
     users?: any[]|null;
 }
 
@@ -35,9 +29,6 @@ export const initialState = {
 export default function reducer(state: RootState = initialState, action: ActionTypes): RootState {
     console.log(action);
     switch (action.type) {
-        case TypeKeys.GET_USERS_REQUEST_ACTION:
-            return {...state, users: null};
-
         case TypeKeys.GET_USERS_SUCCESS_ACTION:
             return {...state, users: action.users};
 
@@ -62,27 +53,16 @@ export default function reducer(state: RootState = initialState, action: ActionT
                 currentUserPosition: null,
                 currentUserToken: null};
 
-        case TypeKeys.LOGIN_REQUEST_ACTION:
-            return {...state, email: action.email, password: action.password};
-
         case TypeKeys.LOGIN_SUCCESS_ACTION:
             return {
                 ...state,
-                email: null,
-                password: null,
-                currentUserId: action.currentUserId,
-                currentUserEmail: state.email,
-                currentUserFirstName: action.currentUserFirstName,
-                currentUserLastName: action.currentUserLastName,
-                currentUserPosition: action.currentUserPosition,
+                currentUserId: action.userId,
+                currentUserEmail: action.userEmail,
+                currentUserFirstName: action.userFirstName,
+                currentUserLastName: action.userLastName,
+                currentUserPosition: action.userPosition,
                 currentUserToken: action.token
             };
-
-        case TypeKeys.REGISTER_REQUEST_ACTION:
-            return {...state, email: action.email, firstName: action.firstName, lastName: action.lastName, position: action.position, password: action.password};
-
-        case TypeKeys.REGISTER_SUCCESS_ACTION:
-            return {...state, email: null, firstName: null, lastName: null, position: null, password: null};
 
         case TypeKeys.OPEN_ERROR_MESSAGE_ACTION:
             return {...state, isErrorMessageOpened: true, errorMessage: action.errorMessage};

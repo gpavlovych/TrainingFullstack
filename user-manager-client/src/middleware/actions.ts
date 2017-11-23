@@ -47,15 +47,16 @@ export const createLoginRequestAction = (email: string, password: string, callba
 
 export interface LoginSuccessAction {
     type: TypeKeys.LOGIN_SUCCESS_ACTION;
-    currentUserId: string;
+    userId: string;
     token: string;
-    currentUserFirstName: string;
-    currentUserLastName: string;
-    currentUserPosition: string;
+    userEmail: string;
+    userFirstName: string;
+    userLastName: string;
+    userPosition: string;
 }
 
-export const createLoginSuccessAction = (currentUserId: string, currentUserFirstName: string, currentUserLastName: string, currentUserPosition: string, token: string): LoginSuccessAction => {
-    return {type: TypeKeys.LOGIN_SUCCESS_ACTION, currentUserId, currentUserFirstName, currentUserLastName, currentUserPosition, token};
+export const createLoginSuccessAction = (userId: string, userFirstName: string, userLastName: string, userPosition: string, token: string, userEmail: string): LoginSuccessAction => {
+    return {type: TypeKeys.LOGIN_SUCCESS_ACTION, userId, userFirstName,  userLastName, userPosition, token, userEmail};
 };
 
 export interface LogoutRequestAction {
