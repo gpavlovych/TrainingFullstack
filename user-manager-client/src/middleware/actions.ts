@@ -105,6 +105,14 @@ export const createRegisterRequestAction = (userPhoto: any,
     };
 };
 
+export interface RegisterSuccessAction {
+    type: TypeKeys.REGISTER_SUCCESS_ACTION;
+}
+
+export const createRegisterSuccessAction = (): RegisterSuccessAction => {
+    return {type: TypeKeys.REGISTER_SUCCESS_ACTION};
+};
+
 export interface CloseSignInFormAction {
     type: TypeKeys.CLOSE_SIGNIN_FORM_ACTION;
 }
@@ -152,14 +160,6 @@ export interface CloseErrorMessageAction {
 
 export const createCloseErrorMessageAction = (): CloseErrorMessageAction => {
     return {type: TypeKeys.CLOSE_ERROR_MESSAGE_ACTION};
-};
-
-export interface RegisterSuccessAction {
-    type: TypeKeys.REGISTER_SUCCESS_ACTION;
-}
-
-export const createRegisterSuccessAction = (): RegisterSuccessAction => {
-    return {type: TypeKeys.REGISTER_SUCCESS_ACTION};
 };
 
 export interface OtherAction {
