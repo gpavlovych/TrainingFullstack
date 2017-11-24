@@ -7,16 +7,10 @@ import {
 } from "./actions";
 
 export function * loginFlow (): IterableIterator<any> {
-    // Because sagas are generators, doing `while (true)` doesn't block our program
-    // Basically here we say "this saga is always listening for actions"
     while (true) {
-        // And we're listening for `LOGIN_REQUEST` actions and destructuring its payload
         const {email, password, callback} =  yield take(TypeKeys.LOGIN_REQUEST_ACTION);
         try
         {
-            // A `LOGOUT` action may happen while the `authorize` effect is going on, which may
-            // lead to a race condition. This is unlikely, but just in case, we call `race` which
-            // returns the "winner", i.e. the one that finished first
             const winner = yield race({
                 loginResponse: call(login, {email, password}),
                 logout: take(TypeKeys.LOGOUT_REQUEST_ACTION)
@@ -39,16 +33,12 @@ export function * loginFlow (): IterableIterator<any> {
 
 export function * registerFlow () {
     while (true) {
-        // We always listen to `REGISTER_REQUEST` actions
         const action = yield take(TypeKeys.REGISTER_REQUEST_ACTION);
         const {email, password, firstName, lastName, position, userPhoto, callback} = action;
         try
         {
-            // We call the `authorize` task with the data, telling it that we are registering a user
-            // This returns `true` if the registering was successful, `false` if not
             const registerResponse = yield call(register, {email, password, firstName, lastName, position, userPhoto});
 
-            // If we could register a user, we send the appropiate actions
             if (registerResponse) {
                 const loginResponse = yield call(login, {email, password});
                 if (loginResponse) {
@@ -86,7 +76,7 @@ export function * getAllUsersFlow() {
         }
     }
 }
-// single entry point to start all Sagas at once
+
 export default function* rootSaga() {
     yield fork(loginFlow);
     yield fork(logoutFlow);
