@@ -30,10 +30,7 @@ describe("sagas testing", ()=> {
         let position = "someposition";
         let token = "sometoken";
         let password = "pwd";
-        let callbackCalled = false;
-        let callback = () => {
-            callbackCalled = true;
-        };
+        let callback= jest.fn();
         expectSaga.testSaga(loginFlow)
             .next()
             .take(TypeKeys.LOGIN_REQUEST_ACTION,)
@@ -52,7 +49,7 @@ describe("sagas testing", ()=> {
             .next()
             .put({type: TypeKeys.CLOSE_SIGNIN_FORM_ACTION})
             .next();
-        expect(callbackCalled).toBeTruthy();
+        expect(callback).toHaveBeenCalled();
     });
 
     it("registerFlow", () => {
@@ -64,10 +61,7 @@ describe("sagas testing", ()=> {
         let token = "sometoken";
         let password = "pwd";
         let userPhoto = "somephoto";
-        let callbackCalled = false;
-        let callback = () => {
-            callbackCalled = true;
-        };
+        let callback = jest.fn();
         expectSaga.testSaga(registerFlow)
             .next()
             .take(TypeKeys.REGISTER_REQUEST_ACTION)
@@ -80,20 +74,18 @@ describe("sagas testing", ()=> {
             .next()
             .put({type: TypeKeys.CLOSE_SIGNUP_FORM_ACTION})
             .next();
-        expect(callbackCalled).toBeTruthy();
+        expect(callback).toHaveBeenCalled();
     });
 
     it("logoutFlow", () => {
-        let callbackCalled = false;
+        let callbackMock = jest.fn();
         expectSaga.testSaga(logoutFlow)
             .next()
             .take(TypeKeys.LOGOUT_REQUEST_ACTION)
-            .next({callback: () => {
-                callbackCalled = true
-            }})
+            .next({callback: callbackMock})
             .put({type: TypeKeys.LOGOUT_SUCCESS_ACTION})
             .next();
-        expect(callbackCalled).toBeTruthy();
+        expect(callbackMock).toHaveBeenCalled();
     });
 
     it("getAllUsersFlow", () => {

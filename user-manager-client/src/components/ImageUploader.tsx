@@ -18,10 +18,7 @@ export class ImageUploader extends React.Component<IImageUploaderProps, IImageUp
     private loadPreview(file: Blob|null) {
         if (file) {
             let reader = new FileReader();
-            reader.onload = (e: any) => {
-                console.log("image preview loaded successfully!");
-                this.setState({preview: e.target.result});
-            };
+            reader.onload = (e: any) => this.setState({preview: e.target.result});
 
             reader.readAsDataURL(file);
         }

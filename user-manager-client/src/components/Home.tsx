@@ -22,11 +22,11 @@ class Home extends React.Component<IHomeProps> {
         return (
             <div>
                 <Header {...this.props} />
-                    <Grid>
-                        <Row>
-                            {users.map((user: any) => <Col xs={12} sm={3} key={user._id} > <UserProfileItem {...user}/></Col>)}
-                        </Row>
-                    </Grid>
+                <Grid>
+                    <Row>
+                        {users.map((user: any) => <Col xs={12} sm={3} key={user._id} > <UserProfileItem {...user}/></Col>)}
+                    </Row>
+                </Grid>
             </div>);
     }
 }

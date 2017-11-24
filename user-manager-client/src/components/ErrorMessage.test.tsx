@@ -1,6 +1,7 @@
 import * as React from 'react';
 import ErrorMessage from "./ErrorMessage";
 import {Modal} from "react-bootstrap";
+import {Provider} from "react-redux";
 
 const enzyme = require("enzyme");
 const adapter =  require('enzyme-adapter-react-16');
@@ -10,12 +11,12 @@ describe("ErrorMessage component", ()=>{
     it("visible w/error", () => {
         const expectedText = "some text";
         const  props = {isErrorMessageOpened: true, errorMessage: expectedText};
-        const store = {store: {
+        const store: any = {
             subscribe: () => {},
             dispatch: () => {},
             getState: () => (props)
-        }};
-        const  wrapper = enzyme.mount(<ErrorMessage {...store}/>);
+        };
+        const  wrapper = enzyme.mount(<Provider store={store}><ErrorMessage /></Provider>);
         expect(wrapper.find(Modal)).toHaveLength(1);
         expect(wrapper.find(Modal).at(0).props().show).toBeTruthy();
         expect(wrapper.find(Modal.Header)).toHaveLength(1);
