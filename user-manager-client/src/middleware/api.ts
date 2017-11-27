@@ -1,5 +1,5 @@
 const request = async (method: string, url: string, {body, token, contentType}: any): Promise<any> => {
-    let options: any = {
+    const options: any = {
         method: method,
         credentials: "same-origin",
         body: body,
@@ -33,32 +33,25 @@ const request = async (method: string, url: string, {body, token, contentType}: 
 };
 
 const get = async (url: string, token: string ) => {
-    let response = await request("GET", url, {token});
-    let responseBody = await response.json();
+    const response = await request("GET", url, {token});
+    const responseBody = await response.json();
     console.log(`response body: ${JSON.stringify(responseBody)}`);
     return responseBody;
 };
 
 const post = async (url: string, {body, token, contentType}: any) => {
-    let response = await request("POST", url, {body, token, contentType});
-    let responseBody = await response.json();
+    const response = await request("POST", url, {body, token, contentType});
+    const responseBody = await response.json();
     console.log(`response body: ${JSON.stringify(responseBody)}`);
     return responseBody;
 };
-/*
-const put = async (url: string, {payload, token}: any) => {
-    let response = await request("PUT", url, {token, payload});
-    let responseBody = response.json();
-    console.log(`response body: ${responseBody}`);
-    return responseBody;
-};
-*/
+
 export const login = async ({email, password}: any)=> {
     return await post("http://localhost:4245/token",{body: JSON.stringify({username: email, password}), contentType: "application/json"});
 };
 
 export const register = async ({email, password, firstName, lastName, position, userPhoto}: any) =>{
-    let formData = new FormData();
+    const formData = new FormData();
     if (userPhoto) {
         formData.append("userPhoto", userPhoto, userPhoto.name);
     }
