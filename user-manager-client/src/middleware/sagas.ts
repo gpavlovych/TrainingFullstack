@@ -1,16 +1,15 @@
-import {call, fork, put, race, take} from "redux-saga/effects";
-import {getUsers, login, register} from "./api";
+import { call, fork, put, race, take } from 'redux-saga/effects';
+import { getUsers, login, register } from './api';
 import {
     createCloseSignInFormAction, createCloseSignUpFormAction, createGetUsersSuccessAction, createLoginSuccessAction,
     createLogoutSuccessAction, createOpenErrorMessageAction,
     TypeKeys
-} from "./actions";
+} from './actions';
 
-export function * loginFlow (): IterableIterator<any> {
+export function * loginFlow () {
     while (true) {
         const {email, password, callback} =  yield take(TypeKeys.LOGIN_REQUEST_ACTION);
-        try
-        {
+        try {
             const winner = yield race({
                 loginResponse: call(login, {email, password}),
                 logout: take(TypeKeys.LOGOUT_REQUEST_ACTION)
@@ -18,14 +17,11 @@ export function * loginFlow (): IterableIterator<any> {
 
             if (winner.loginResponse) {
                 const {_id, firstName, lastName, position, token} = winner.loginResponse;
-                debugger;
                 yield put(createLoginSuccessAction(_id, firstName, lastName, position, token, email));
                 yield put(createCloseSignInFormAction());
                 callback();
             }
-        }
-        catch (error) {
-            debugger;
+        } catch (error) {
             yield put(createOpenErrorMessageAction(error));
         }
     }
@@ -35,22 +31,19 @@ export function * registerFlow () {
     while (true) {
         const action = yield take(TypeKeys.REGISTER_REQUEST_ACTION);
         const {email, password, firstName, lastName, position, userPhoto, callback} = action;
-        try
-        {
+        try {
             const registerResponse = yield call(register, {email, password, firstName, lastName, position, userPhoto});
 
             if (registerResponse) {
                 const loginResponse = yield call(login, {email, password});
                 if (loginResponse) {
-                    const {_id, firstName, lastName, position, token} = loginResponse;
-
-                    yield put(createLoginSuccessAction(_id, firstName, lastName, position, token, email));// User is logged in (authorized)
+                    const {_id, token} = loginResponse;
+                    yield put(createLoginSuccessAction(_id, firstName, lastName, position, token, email));
                     yield put(createCloseSignUpFormAction());
-                    callback(); // Go to dashboard page
+                    callback(); 
                 }
             }
-        }
-        catch (error) {
+        } catch (error) {
            yield put(createOpenErrorMessageAction(error));
         }
     }
@@ -58,7 +51,7 @@ export function * registerFlow () {
 
 export function * logoutFlow () {
     while (true) {
-        const {callback}= yield take(TypeKeys.LOGOUT_REQUEST_ACTION);
+        const { callback } = yield take(TypeKeys.LOGOUT_REQUEST_ACTION);
         yield put (createLogoutSuccessAction());
         callback();
     }
@@ -70,8 +63,7 @@ export function * getAllUsersFlow() {
         try {
             const usersResponse = yield call(getUsers, {token});
             yield put(createGetUsersSuccessAction(usersResponse));
-        }
-        catch(error) {
+        } catch (error) {
             yield put(createOpenErrorMessageAction(error));
         }
     }

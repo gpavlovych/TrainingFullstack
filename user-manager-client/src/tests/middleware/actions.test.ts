@@ -64,7 +64,7 @@ describe("actions",()=> {
     });
 
     it("RegisterRequestAction", () => {
-        const expectedUserPhoto = "somephoto";
+        const expectedUserPhoto = new Blob();
         const expectedFirstName = "someemail@ex";
         const expectedLastName = "someemail@ex";
         const expectedPosition = "someemail@ex";

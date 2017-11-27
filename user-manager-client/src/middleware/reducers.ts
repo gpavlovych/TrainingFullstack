@@ -1,16 +1,17 @@
-import {ActionTypes, TypeKeys} from "./actions";
+import { ActionTypes, TypeKeys } from './actions';
 
-export interface RootState{
+export interface RootState {
     isSignInFormOpened: boolean;
     isSignUpFormOpened: boolean;
     isErrorMessageOpened: boolean;
-    currentUserId: any;
-    currentUserEmail: any;
-    currentUserFirstName: any;
-    currentUserLastName: any;
-    currentUserPosition: any;
-    currentUserToken: any;
+    currentUserId: string|null;
+    currentUserEmail: string|null;
+    currentUserFirstName: string|null;
+    currentUserLastName: string|null;
+    currentUserPosition: string|null;
+    currentUserToken: string|null;
     errorMessage?: string|null;
+    // tslint:disable-next-line
     users?: any[]|null;
 }
 
@@ -27,7 +28,6 @@ export const initialState = {
 };
 
 export default function reducer(state: RootState = initialState, action: ActionTypes): RootState {
-    console.log(action);
     switch (action.type) {
         case TypeKeys.GET_USERS_SUCCESS_ACTION:
             return {...state, users: action.users};
@@ -48,7 +48,7 @@ export default function reducer(state: RootState = initialState, action: ActionT
             return {...state,
                 currentUserId: null,
                 currentUserEmail: null,
-                currentUserFirstName:null,
+                currentUserFirstName: null,
                 currentUserLastName: null,
                 currentUserPosition: null,
                 currentUserToken: null};

@@ -1,7 +1,7 @@
-import reducer, {RootState} from "../../middleware/reducers";
-import {TypeKeys} from "../../middleware/actions";
+import reducer, { RootState } from "../../middleware/reducers";
+import { TypeKeys } from "../../middleware/actions";
 
-describe("reducer", ()=> {
+describe("reducer", () => {
     const initialState: RootState = {
         errorMessage: "someErrorMessage",
         currentUserPosition: "someCurrentUserPosition",
@@ -12,7 +12,7 @@ describe("reducer", ()=> {
         users: ["user1", "user2"],
         isErrorMessageOpened: false,
         isSignUpFormOpened: false,
-        currentUserEmail: false,
+        currentUserEmail: "someuseremail@gmail.com",
         isSignInFormOpened: false
     };
 

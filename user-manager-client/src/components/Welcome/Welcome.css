@@ -5,5 +5,5 @@
     left: 0;
     z-index: -1;
     background-size: cover;
-    background-image: url("Welcome/WelcomeBackground.jpg");
+    background-image: url("./WelcomeBackground.jpg");
 }

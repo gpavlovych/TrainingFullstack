@@ -8,7 +8,7 @@ enzyme.configure({adapter: new adapter()});
 describe("UserProfileItem component", ()=>{
     it("contains login, errormessage and rightnavbar, with history", ()=> {
         const props = {
-            _id: 1,
+            _id: "1",
             firstName: "someFirstName",
             lastName: "someLastName",
             position: "somePosition"

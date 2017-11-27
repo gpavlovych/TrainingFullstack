@@ -1,19 +1,19 @@
 export enum TypeKeys {
-    GET_USERS_REQUEST_ACTION = "GET_USERS_REQUEST_ACTION",
-    GET_USERS_SUCCESS_ACTION = "GET_USERS_SUCCESS_ACTION",
-    LOGIN_REQUEST_ACTION = "LOGIN_REQUEST_ACTION",
-    LOGOUT_SUCCESS_ACTION = "LOGOUT_SUCCESS_ACTION",
-    LOGOUT_REQUEST_ACTION = "LOGOUT_REQUEST_ACTION",
-    REGISTER_REQUEST_ACTION = "REGISTER_REQUEST_ACTION",
-    CLOSE_SIGNUP_FORM_ACTION = "CLOSE_SIGNUP_FORM_ACTION",
-    CLOSE_SIGNIN_FORM_ACTION = "CLOSE_SIGNIN_FORM_ACTION",
-    OPEN_SIGNIN_FORM_ACTION = "OPEN_SIGNIN_FORM_ACTION",
-    OPEN_SIGNUP_FORM_ACTION = "OPEN_SIGNUP_FORM_ACTION",
-    LOGIN_SUCCESS_ACTION = "LOGIN_SUCCESS_ACTION",
-    REGISTER_SUCCESS_ACTION = "REGISTER_SUCCESS_ACTION",
-    OPEN_ERROR_MESSAGE_ACTION = "OPEN_ERROR_MESSAGE_ACTION",
-    CLOSE_ERROR_MESSAGE_ACTION = "CLOSE_ERROR_MESSAGE_ACTION",
-    OTHER_ACTION = "OTHER_ACTION"
+    GET_USERS_REQUEST_ACTION = 'GET_USERS_REQUEST_ACTION',
+    GET_USERS_SUCCESS_ACTION = 'GET_USERS_SUCCESS_ACTION',
+    LOGIN_REQUEST_ACTION = 'LOGIN_REQUEST_ACTION',
+    LOGOUT_SUCCESS_ACTION = 'LOGOUT_SUCCESS_ACTION',
+    LOGOUT_REQUEST_ACTION = 'LOGOUT_REQUEST_ACTION',
+    REGISTER_REQUEST_ACTION = 'REGISTER_REQUEST_ACTION',
+    CLOSE_SIGNUP_FORM_ACTION = 'CLOSE_SIGNUP_FORM_ACTION',
+    CLOSE_SIGNIN_FORM_ACTION = 'CLOSE_SIGNIN_FORM_ACTION',
+    OPEN_SIGNIN_FORM_ACTION = 'OPEN_SIGNIN_FORM_ACTION',
+    OPEN_SIGNUP_FORM_ACTION = 'OPEN_SIGNUP_FORM_ACTION',
+    LOGIN_SUCCESS_ACTION = 'LOGIN_SUCCESS_ACTION',
+    REGISTER_SUCCESS_ACTION = 'REGISTER_SUCCESS_ACTION',
+    OPEN_ERROR_MESSAGE_ACTION = 'OPEN_ERROR_MESSAGE_ACTION',
+    CLOSE_ERROR_MESSAGE_ACTION = 'CLOSE_ERROR_MESSAGE_ACTION',
+    OTHER_ACTION = 'OTHER_ACTION'
 }
 
 export interface GetUsersRequestAction {
@@ -21,15 +21,17 @@ export interface GetUsersRequestAction {
     token: string;
 }
 
-export const createGetUserRequestAction = (token: string): GetUsersRequestAction =>{
+export const createGetUserRequestAction = (token: string): GetUsersRequestAction => {
     return {type: TypeKeys.GET_USERS_REQUEST_ACTION, token};
 };
 
 export interface GetUsersSuccessAction {
     type: TypeKeys.GET_USERS_SUCCESS_ACTION;
+    // tslint:disable-next-line
     users: any[];
 }
 
+// tslint:disable-next-line
 export const createGetUsersSuccessAction = (users: any[]): GetUsersSuccessAction => {
   return {type: TypeKeys.GET_USERS_SUCCESS_ACTION, users};
 };
@@ -38,10 +40,10 @@ export interface LoginRequestAction {
     type: TypeKeys.LOGIN_REQUEST_ACTION;
     email: string;
     password: string;
-    callback: ()=>void;
+    callback: () => void;
 }
 
-export const createLoginRequestAction = (email: string, password: string, callback: ()=>void): LoginRequestAction => {
+export const createLoginRequestAction = (email: string, password: string, callback: () => void): LoginRequestAction => {
     return {type: TypeKeys.LOGIN_REQUEST_ACTION, email, password, callback};
 };
 
@@ -55,16 +57,23 @@ export interface LoginSuccessAction {
     userPosition: string;
 }
 
-export const createLoginSuccessAction = (userId: string, userFirstName: string, userLastName: string, userPosition: string, token: string, userEmail: string): LoginSuccessAction => {
+export const createLoginSuccessAction = (
+        userId: string,
+        userFirstName: string, 
+        userLastName: string,
+        userPosition: string,
+        token: string,
+        userEmail: string
+    ): LoginSuccessAction => {
     return {type: TypeKeys.LOGIN_SUCCESS_ACTION, userId, userFirstName,  userLastName, userPosition, token, userEmail};
 };
 
 export interface LogoutRequestAction {
     type: TypeKeys.LOGOUT_REQUEST_ACTION;
-    callback: ()=>void;
+    callback: () => void;
 }
 
-export const createLogoutRequestAction = (callback: ()=>void): LogoutRequestAction => {
+export const createLogoutRequestAction = (callback: () => void): LogoutRequestAction => {
     return {type: TypeKeys.LOGOUT_REQUEST_ACTION, callback};
 };
 
@@ -78,22 +87,25 @@ export const createLogoutSuccessAction = (): LogoutSuccessAction => {
 
 export interface RegisterRequestAction {
     type: TypeKeys.REGISTER_REQUEST_ACTION;
-    userPhoto: any;
+    userPhoto: Blob|null;
     firstName: string;
     lastName: string;
     position: string;
     email: string;
     password: string;
-    callback: ()=>void;
+    callback: () => void;
 }
 
-export const createRegisterRequestAction = (userPhoto: any,
+export const createRegisterRequestAction = (
+        userPhoto: Blob|null,
         firstName: string,
         lastName: string,
         position: string,
         email: string,
         password: string,
-        callback: ()=>void): RegisterRequestAction => {
+        callback: () => void
+    ): RegisterRequestAction => {
+
     return {
         type: TypeKeys.REGISTER_REQUEST_ACTION,
         userPhoto,

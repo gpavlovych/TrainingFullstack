@@ -6,7 +6,7 @@ import Routes from "../../components/Routes/Routes";
 
 const enzyme = require("enzyme");
 const adapter =  require('enzyme-adapter-react-16');
-enzyme.configure({adapter: new adapter()})
+enzyme.configure({adapter: new adapter()});
 describe("App component", ()=>{
     it('renders without crashing', () => {
         const div = document.createElement('div');
