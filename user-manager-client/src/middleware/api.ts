@@ -1,6 +1,6 @@
 // tslint:disable-next-line
 const request = async (method: string, url: string, {body, token, contentType}: any): Promise<any> => {
-    url = process.env.API_URL + url;
+    url = process.env.REACT_APP_API_URL + url;
     const options: RequestInit = {
         method: method,
         credentials: 'same-origin',

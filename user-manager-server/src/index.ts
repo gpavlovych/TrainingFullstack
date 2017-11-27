@@ -165,7 +165,7 @@ app
 
 if (!module.parent) {
     app.listen(config.port);
-    console.log("Listening on port " + config.port);
+    console.log(`API URL locally: http://localhost:${config.port}/`);
 }
 else {
     console.log("Called from unit tests");

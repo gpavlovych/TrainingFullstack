@@ -27,10 +27,8 @@ export class SignInForm extends React.Component<SignInFormProps, SignInFormState
                 return 'email is required!';
             }
 
-            let emailRegex = new RegExp(
-                                '^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|' +
-                                '(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|' +
-                                '(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
+            // tslint:disable-next-line
+            let emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             if (!emailRegex.test(val)) {
                 return 'email should have valid format!';
             }
