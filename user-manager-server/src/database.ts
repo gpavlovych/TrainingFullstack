@@ -1,28 +1,28 @@
 'use strict';
 import * as mongoose from "mongoose";
 import * as bluebird from "bluebird";
-import { IUser } from './models/user';
-import {UserSchema} from "./models/User";
+import { User } from './models/user-data-models';
+import {UserSchema} from "./models/user-data-models";
 
-export interface IDatabaseConfig {
-    host: string,
+export interface DatabaseConfig {
+    url: string,
     user ?: string,
     pwd ?: string
 }
 
-export interface IDatabase {
-    userModel: mongoose.Model<IUser>;
+export interface Database {
+    userModel: mongoose.Model<User>;
 }
 
-export function init(config: IDatabaseConfig): IDatabase {
+export function init(config: DatabaseConfig): Database {
     (<any>mongoose).Promise = bluebird.Promise;
-    let mongoDb = mongoose.createConnection(config.host);
+    let mongoDb = mongoose.createConnection(config.url);
     mongoDb.on('error', () => {
-        console.log(`Unable to connect to database: ${config.host}`);
+        console.log(`Unable to connect to database: ${config.url}`);
     });
 
     mongoDb.once('open', () => {
-        console.log(`Connected to database: ${config.host}`);
+        console.log(`Connected to database: ${config.url}`);
     });
 
     return {

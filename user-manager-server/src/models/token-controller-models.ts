@@ -1,4 +1,4 @@
-export interface ILoginModel {
+export interface PostTokenRequest {
     username: string;
     password: string;
 }

@@ -1,15 +1,15 @@
 import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 import server, {config} from '../src';
-import {IDatabase, init} from '../src/database';
-import {IUser} from "../src/models/User";
+import {Database, init} from '../src/database';
+import {User} from "../src/models/user-data-models";
 
 chai.use(chaiHttp);
 
 const expect = chai.expect;
 
 describe('methods /api/v1/users', async () => {
-    let database: IDatabase = init({host: config.host});
+    let database: Database = init({host: config.host});
 
     let verifyUser = (expectedUser: any, actualUser: any) => {
         if (actualUser!==null && expectedUser !== null) {
