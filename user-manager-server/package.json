@@ -23,7 +23,7 @@
     "koa-multer": "^1.0.2",
     "koa-router": "^7.3.0",
     "koa2-cors": "^2.0.5",
-    "mongoose": "^4.13.4"
+    "mongoose": "^4.13.21"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.18",
